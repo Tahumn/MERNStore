@@ -8,6 +8,21 @@ import React from 'react';
 
 import { Col } from 'reactstrap';
 
+const PAYMENT_LABELS = {
+  COD: 'Cash on Delivery',
+  BANK_TRANSFER: 'Bank Transfer',
+  EWALLET: 'E-Wallet / QR Payment',
+  CARD: 'Credit / Debit Card (Offline)'
+};
+
+const formatPaymentMethod = method => {
+  if (!method) {
+    return 'Not specified';
+  }
+
+  return PAYMENT_LABELS[method] ?? method;
+};
+
 const OrderSummary = props => {
   const { order } = props;
 
@@ -26,6 +41,13 @@ const OrderSummary = props => {
       <div className='d-flex align-items-center summary-item'>
         <p className='summary-label'>Shipping & Handling</p>
         <p className='summary-value ml-auto'>$0</p>
+      </div>
+
+      <div className='d-flex align-items-center summary-item'>
+        <p className='summary-label'>Payment Method</p>
+        <p className='summary-value ml-auto'>
+          {formatPaymentMethod(order?.payment?.method)}
+        </p>
       </div>
 
       <hr />

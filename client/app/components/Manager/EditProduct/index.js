@@ -157,6 +157,17 @@ const EditProduct = props => {
           )}
           <Col xs='12' md='12' className='mt-3 mb-2'>
             <Switch
+              id={`featured-product-${product._id}`}
+              name={'isFeatured'}
+              label={'Featured?'}
+              checked={product?.isFeatured}
+              toggleCheckboxChange={value => {
+                productChange('isFeatured', value);
+              }}
+            />
+          </Col>
+          <Col xs='12' md='12' className='mt-3 mb-2'>
+            <Switch
               id={`enable-product-${product._id}`}
               name={'isActive'}
               label={'Active?'}

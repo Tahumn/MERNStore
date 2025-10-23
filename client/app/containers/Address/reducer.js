@@ -20,6 +20,8 @@ import {
 const initialState = {
   addresses: [],
   addressFormData: {
+    fullName: '',
+    phoneNumber: '',
     address: '',
     city: '',
     state: '',
@@ -29,6 +31,8 @@ const initialState = {
   },
   address: {
     _id: '',
+    fullName: '',
+    phoneNumber: '',
     address: '',
     city: '',
     state: '',
@@ -37,7 +41,8 @@ const initialState = {
     isDefault: false
   },
   formErrors: {},
-  editFormErrors: {}
+  editFormErrors: {},
+  isLoading: false
 };
 
 const addressReducer = (state = initialState, action) => {
@@ -97,6 +102,8 @@ const addressReducer = (state = initialState, action) => {
       return {
         ...state,
         addressFormData: {
+          fullName: '',
+          phoneNumber: '',
           address: '',
           city: '',
           state: '',

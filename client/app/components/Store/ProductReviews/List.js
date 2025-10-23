@@ -9,14 +9,20 @@ import React from 'react';
 import ReactStars from 'react-rating-stars-component';
 
 import { formatDate } from '../../../utils/date';
-import { getRandomColors } from '../../../utils';
+import { getMemoizedRandomColors } from '../../../utils';
 
 const List = props => {
   const { reviews } = props;
 
   const getAvatar = review => {
-    const color = getRandomColors();
-    if (review.user.firstName) {
+    const initialsSource =
+      review?.user?._id ||
+      review?.user?.firstName ||
+      review?._id ||
+      review?.created;
+    const color = getMemoizedRandomColors(initialsSource);
+
+    if (review.user?.firstName) {
       return (
         <div
           className='d-flex flex-column justify-content-center align-items-center fw-normal text-white avatar'
@@ -26,16 +32,33 @@ const List = props => {
         </div>
       );
     }
+
+    return (
+      <div
+        className='d-flex flex-column justify-content-center align-items-center fw-normal text-white avatar'
+        style={{ backgroundColor: color ? color : 'red' }}
+      >
+        ?
+      </div>
+    );
   };
 
   return (
     <div className='review-list'>
-      {reviews.map((review, index) => (
-        <div className='d-flex align-items-center mb-3 review-box' key={index}>
+      {reviews.map(review => {
+        const key =
+          review?._id ||
+          `${review?.user?._id || review?.user?.firstName || 'review'}-${
+            review?.created
+          }`;
+        return (
+          <div className='d-flex align-items-center mb-3 review-box' key={key}>
           <div className='mx-3'>{getAvatar(review)}</div>
           <div className='p-3 p-lg-4 w-100'>
             <div className='d-flex align-items-center justify-content-between'>
-              <h4 className='mb-0 mr-2 one-line-ellipsis'>{review.title}</h4>
+              <h4 className='mb-0 mr-2 one-line-ellipsis'>
+                {review.user?.firstName || 'Customer'}
+              </h4>
               <ReactStars
                 classNames='mr-2'
                 size={16}
@@ -47,14 +70,15 @@ const List = props => {
                 emptyIcon={<i className='fa fa-star' />}
                 halfIcon={<i className='fa fa-star-half-alt' />}
                 filledIcon={<i className='fa fa-star' />}
-                value={review.rating}
+                value={Number(review.rating) || 0}
               />
             </div>
             <p className='mb-2 fs-12'>{formatDate(`${review?.created}`)}</p>
             <p className='mb-0 three-line-ellipsis word-break-all'>{`${review?.review}`}</p>
           </div>
         </div>
-      ))}
+        );
+      })}
     </div>
   );
 };

@@ -13,6 +13,21 @@ import { formatDate } from '../../../utils/date';
 import Button from '../../Common/Button';
 import { ArrowBackIcon } from '../../Common/Icon';
 
+const PAYMENT_LABELS = {
+  COD: 'Cash on Delivery',
+  BANK_TRANSFER: 'Bank Transfer',
+  EWALLET: 'E-Wallet / QR Payment',
+  CARD: 'Credit / Debit Card (Offline)'
+};
+
+const formatPaymentMethod = method => {
+  if (!method) {
+    return 'Not specified';
+  }
+
+  return PAYMENT_LABELS[method] ?? method;
+};
+
 const OrderMeta = props => {
   const { order, cancelOrder, onBack } = props;
 
@@ -25,6 +40,13 @@ const OrderMeta = props => {
       return <Button size='sm' text='Cancel Order' onClick={cancelOrder} />;
     }
   };
+
+  const shipping = order?.shipping || {};
+  const shippingLines = [
+    shipping.address,
+    [shipping.city, shipping.state].filter(Boolean).join(', '),
+    [shipping.country, shipping.zipCode].filter(Boolean).join(' ')
+  ].filter(line => line && line.trim().length > 0);
 
   return (
     <div className='order-meta'>
@@ -64,6 +86,38 @@ const OrderMeta = props => {
           {renderMetaAction()}
         </Col>
       </Row>
+      {(shipping.fullName || shippingLines.length > 0 || shipping.phoneNumber) && (
+        <Row className='mt-3'>
+          <Col xs='12' md='6' className='mb-3 mb-md-0'>
+            <p className='order-meta-heading'>Shipping To</p>
+            <div className='order-shipping-box'>
+              {shipping.fullName && (
+                <p className='order-label mb-1'>{shipping.fullName}</p>
+              )}
+              {shipping.phoneNumber && (
+                <p className='order-label mb-1'>{shipping.phoneNumber}</p>
+              )}
+              {shippingLines.map((line, index) => (
+                <p key={`shipping-line-${index}`} className='order-label mb-1'>
+                  {line}
+                </p>
+              ))}
+              {shipping.note && (
+                <p className='order-note mb-0'>Note: {shipping.note}</p>
+              )}
+            </div>
+          </Col>
+          <Col xs='12' md='6'>
+            <p className='order-meta-heading'>Payment Method</p>
+            <p className='order-label mb-0'>
+              {formatPaymentMethod(order?.payment?.method)}
+            </p>
+            {order?.payment?.status && (
+              <p className='order-status mt-1 mb-0'>{order.payment.status}</p>
+            )}
+          </Col>
+        </Row>
+      )}
     </div>
   );
 };

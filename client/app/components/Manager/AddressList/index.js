@@ -36,6 +36,12 @@ const AddressList = props => {
               ) : (
                 <h4 className='mb-0'>Delivery Address</h4>
               )}
+              {address.fullName && (
+                <p className='mb-1 address-recipient'>{address.fullName}</p>
+              )}
+              {address.phoneNumber && (
+                <p className='mb-1 address-phone'>{address.phoneNumber}</p>
+              )}
               <p className='mb-2 address-desc'>
                 {`${address?.address} ${address?.city}, ${address?.country}, ${address?.zipCode}`}
               </p>

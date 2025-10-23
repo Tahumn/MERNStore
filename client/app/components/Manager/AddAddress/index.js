@@ -27,6 +27,32 @@ const AddAddress = props => {
           <Col xs='12' md='12'>
             <Input
               type={'text'}
+              error={formErrors['fullName']}
+              label={'Full Name'}
+              name={'fullName'}
+              placeholder={'Recipient Full Name'}
+              value={addressFormData.fullName}
+              onInputChange={(name, value) => {
+                addressChange(name, value);
+              }}
+            />
+          </Col>
+          <Col xs='12' md='12'>
+            <Input
+              type={'text'}
+              error={formErrors['phoneNumber']}
+              label={'Phone Number'}
+              name={'phoneNumber'}
+              placeholder={'Contact Phone Number'}
+              value={addressFormData.phoneNumber}
+              onInputChange={(name, value) => {
+                addressChange(name, value);
+              }}
+            />
+          </Col>
+          <Col xs='12' md='12'>
+            <Input
+              type={'text'}
               error={formErrors['address']}
               label={'Address'}
               name={'address'}

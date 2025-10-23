@@ -25,7 +25,7 @@ exports.REVIEW_STATUS = {
 };
 
 exports.EMAIL_PROVIDER = {
-  Email: 'Email',
+  Email: 'email',
   Google: 'Google',
   Facebook: 'Facebook'
 };

@@ -10,7 +10,8 @@ import {
   REMOVE_FROM_CART,
   HANDLE_CART_TOTAL,
   SET_CART_ID,
-  CLEAR_CART
+  CLEAR_CART,
+  UPDATE_CART_ITEM
 } from './constants';
 
 const initialState = {
@@ -71,6 +72,12 @@ const cartReducer = (state = initialState, action) => {
         cartItems: [],
         cartTotal: 0,
         cartId: ''
+      };
+      return newState;
+    case UPDATE_CART_ITEM:
+      newState = {
+        ...state,
+        cartItems: action.payload
       };
       return newState;
 

@@ -1,0 +1,96 @@
+# services:
+#   client:
+#     build: ./client
+#     container_name: client
+#     ports:
+#       - '8080:8080'
+#     networks:
+#       - app-network
+
+#   server:
+#     build: ./server
+#     container_name: server
+#     environment:
+#       - PORT=3000
+#       - BASE_API_URL=api
+#       - CLIENT_URL=http://localhost:8080
+#       - JWT_SECRET=secret_key_123
+#       - MONGO_URI=mongodb://mongo:27017/mern_ecommerce
+#     ports:
+#       - '3000:3000'
+#     depends_on:
+#       - mongo
+#     networks:
+#       - app-network
+
+#   mongo:
+#     image: mongo:latest
+#     container_name: mongodb
+#     command: mongod --quiet --logpath /dev/null
+#     ports:
+#       - '27017:27017'
+#     networks:
+#       - app-network
+
+# networks:
+#   app-network:
+#     driver: bridge
+
+
+services:
+  client:
+    build: ./client
+    container_name: client
+    ports:
+      - '8081:8080'
+    networks:
+      - app-network
+
+  server:
+    build: ./server
+    container_name: server
+    environment:
+      - PORT=3000
+      - BASE_API_URL=api
+      - CLIENT_URL=http://localhost:8081
+      - JWT_SECRET=secret_key_123
+      - MONGO_URI=mongodb://mongo:27017/mern_ecommerce
+    ports:
+      - '3001:3000'
+    depends_on:
+      - mongo
+    networks:
+      - app-network
+
+  mongo:
+    image: mongo:latest
+    container_name: mongodb
+    command: mongod --quiet --logpath /dev/null
+    volumes:
+      - mongo-data:/data/db
+    ports:
+      - '27017:27017'
+    networks:
+      - app-network
+
+  mongo-seed:
+    build: ./server
+    container_name: mongo-seed
+    profiles:
+      - seed
+    # 🧠 chạy file seed.js với email & password admin
+    command: ["node", "utils/seed.js", "admin@gmail.com", "admin123"]
+    depends_on:
+      - mongo
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/mern_ecommerce
+    networks:
+      - app-network
+    restart: "no" # chỉ chạy 1 lần rồi thoát
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mongo-data:

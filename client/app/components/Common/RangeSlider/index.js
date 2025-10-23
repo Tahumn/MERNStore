@@ -29,8 +29,13 @@ const handle = props => {
 class RangeSlider extends React.Component {
   constructor(props) {
     super(props);
+    const sliderDefault = Array.isArray(props.defaultValue)
+      ? props.defaultValue[0]
+      : props.defaultValue;
+
     this.state = {
-      sliderValue: 50,
+      sliderValue:
+        typeof sliderDefault === 'number' ? sliderDefault : Number(sliderDefault) || 0,
       rangeValue: this.props.defaultValue
     };
   }
@@ -58,6 +63,9 @@ class RangeSlider extends React.Component {
   render() {
     const { type, marks, step, defaultValue, max, allowCross } = this.props;
     const { sliderValue, rangeValue } = this.state;
+    const sliderDefault = Array.isArray(defaultValue)
+      ? defaultValue[0]
+      : defaultValue;
 
     return (
       <>
@@ -68,7 +76,7 @@ class RangeSlider extends React.Component {
             reverse
             allowCross={allowCross}
             step={step}
-            defaultValue={defaultValue}
+            defaultValue={sliderDefault}
             marks={marks}
             value={sliderValue}
             onChange={this.onSliderChange}

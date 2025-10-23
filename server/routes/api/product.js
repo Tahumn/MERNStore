@@ -15,6 +15,10 @@ const {
   getStoreProductsQuery,
   getStoreProductsWishListQuery
 } = require('../../utils/queries');
+const {
+  ensureProductImage,
+  ensureProductsHaveImage
+} = require('../../utils/productImage');
 const { ROLES } = require('../../constants');
 
 const storage = multer.memoryStorage();
@@ -41,8 +45,10 @@ router.get('/item/:slug', async (req, res) => {
       });
     }
 
+    const product = ensureProductImage(productDoc);
+
     res.status(200).json({
-      product: productDoc
+      product
     });
   } catch (error) {
     res.status(400).json({
@@ -59,16 +65,18 @@ router.get('/list/search/:name', async (req, res) => {
     const productDoc = await Product.find(
       { name: { $regex: new RegExp(name), $options: 'is' }, isActive: true },
       { name: 1, slug: 1, imageUrl: 1, price: 1, _id: 0 }
-    );
+    ).lean();
 
-    if (productDoc.length < 0) {
+    if (!productDoc || productDoc.length < 1) {
       return res.status(404).json({
         message: 'No product found.'
       });
     }
 
+    const products = ensureProductsHaveImage(productDoc);
+
     res.status(200).json({
-      products: productDoc
+      products
     });
   } catch (error) {
     res.status(400).json({
@@ -90,7 +98,27 @@ router.get('/list', async (req, res) => {
       page = 1,
       limit = 10
     } = req.query;
-    sortOrder = JSON.parse(sortOrder);
+
+    // Safely parse sortOrder from query
+    // Accepts JSON string or plain object; defaults to a valid sort
+    let parsedSortOrder = { created: -1 };
+    try {
+      if (typeof sortOrder === 'string' && sortOrder.trim()) {
+        parsedSortOrder = JSON.parse(sortOrder);
+      } else if (sortOrder && typeof sortOrder === 'object') {
+        parsedSortOrder = sortOrder;
+      }
+      // Ensure result is an object with at least one key
+      if (
+        !parsedSortOrder ||
+        typeof parsedSortOrder !== 'object' ||
+        Object.keys(parsedSortOrder).length === 0
+      ) {
+        parsedSortOrder = { created: -1 };
+      }
+    } catch (e) {
+      parsedSortOrder = { created: -1 };
+    }
 
     const categoryFilter = category ? { category } : {};
     const basicQuery = getStoreProductsQuery(min, max, rating);
@@ -133,7 +161,7 @@ router.get('/list', async (req, res) => {
 
     // paginate query
     const paginateQuery = [
-      { $sort: sortOrder },
+      { $sort: parsedSortOrder },
       { $skip: size * limit },
       { $limit: limit * 1 }
     ];
@@ -147,14 +175,90 @@ router.get('/list', async (req, res) => {
       products = await Product.aggregate(basicQuery.concat(paginateQuery));
     }
 
+    const productsWithImages = ensureProductsHaveImage(products);
+
     res.status(200).json({
-      products,
+      products: productsWithImages,
       totalPages: Math.ceil(count / limit),
       currentPage,
       count
     });
   } catch (error) {
     console.log('error', error);
+    res.status(400).json({
+      error: 'Your request could not be processed. Please try again.'
+    });
+  }
+});
+
+router.get('/featured', async (req, res) => {
+  try {
+    const limit = Number(req.query.limit) || 8;
+    const userDoc = await checkAuth(req);
+    const baseQuery = getStoreProductsQuery(1, 100000000, 0);
+    const featuredMatch = [
+      {
+        $match: {
+          isFeatured: true,
+          isActive: true
+        }
+      }
+    ];
+    const sortAndLimit = [{ $sort: { created: -1 } }, { $limit: limit }];
+
+    let products = [];
+
+    if (userDoc) {
+      const wishListQuery = getStoreProductsWishListQuery(userDoc.id);
+      products = await Product.aggregate(
+        wishListQuery.concat(featuredMatch).concat(baseQuery).concat(sortAndLimit)
+      );
+    } else {
+      products = await Product.aggregate(
+        featuredMatch.concat(baseQuery).concat(sortAndLimit)
+      );
+    }
+
+    const productsWithImages = ensureProductsHaveImage(products);
+
+    res.status(200).json({
+      products: productsWithImages
+    });
+  } catch (error) {
+    res.status(400).json({
+      error: 'Your request could not be processed. Please try again.'
+    });
+  }
+});
+
+router.get('/popular', async (req, res) => {
+  try {
+    const limit = Number(req.query.limit) || 8;
+    const { min, max, rating = 0 } = req.query;
+    const userDoc = await checkAuth(req);
+    const baseQuery = getStoreProductsQuery(min, max, rating);
+    const sortAndLimit = [
+      { $sort: { totalReviews: -1, averageRating: -1, created: -1 } },
+      { $limit: limit }
+    ];
+
+    let products = [];
+
+    if (userDoc) {
+      const wishListQuery = getStoreProductsWishListQuery(userDoc.id);
+      products = await Product.aggregate(
+        wishListQuery.concat(baseQuery).concat(sortAndLimit)
+      );
+    } else {
+      products = await Product.aggregate(baseQuery.concat(sortAndLimit));
+    }
+
+    const productsWithImages = ensureProductsHaveImage(products);
+
+    res.status(200).json({
+      products: productsWithImages
+    });
+  } catch (error) {
     res.status(400).json({
       error: 'Your request could not be processed. Please try again.'
     });
@@ -190,6 +294,7 @@ router.post(
       const price = req.body.price;
       const taxable = req.body.taxable;
       const isActive = req.body.isActive;
+      const isFeatured = req.body.isFeatured;
       const brand = req.body.brand;
       const image = req.file;
 
@@ -227,6 +332,11 @@ router.post(
         price,
         taxable,
         isActive,
+        isFeatured:
+          isFeatured === true ||
+          isFeatured === 'true' ||
+          isFeatured === 1 ||
+          isFeatured === '1',
         brand,
         imageUrl,
         imageKey
@@ -282,8 +392,10 @@ router.get(
         });
       }
 
+      const productsWithImages = ensureProductsHaveImage(products);
+
       res.status(200).json({
-        products
+        products: productsWithImages
       });
     } catch (error) {
       res.status(400).json({
@@ -330,8 +442,10 @@ router.get(
         });
       }
 
+      const product = ensureProductImage(productDoc);
+
       res.status(200).json({
-        product: productDoc
+        product
       });
     } catch (error) {
       res.status(400).json({
@@ -360,6 +474,14 @@ router.put(
         return res
           .status(400)
           .json({ error: 'Sku or slug is already in use.' });
+      }
+
+      if (Object.prototype.hasOwnProperty.call(update, 'isFeatured')) {
+        update.isFeatured =
+          update.isFeatured === true ||
+          update.isFeatured === 'true' ||
+          update.isFeatured === 1 ||
+          update.isFeatured === '1';
       }
 
       await Product.findOneAndUpdate(query, update, {

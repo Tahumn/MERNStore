@@ -20,7 +20,31 @@ import LoadingIndicator from '../../components/Common/LoadingIndicator';
 
 class Dashboard extends React.PureComponent {
   componentDidMount() {
-    this.props.fetchProfile();
+    const { user } = this.props;
+    // Only fetch profile if user data is not loaded yet
+    if (!user || !user._id) {
+      this.props.fetchProfile();
+    }
+    this.updateBodyClass();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.user?.role !== this.props.user?.role) {
+      this.updateBodyClass();
+    }
+  }
+
+  componentWillUnmount() {
+    document.body.classList.remove('admin-dashboard-view');
+  }
+
+  updateBodyClass() {
+    const { user } = this.props;
+    if (typeof document === 'undefined') {
+      return;
+    }
+    const isAdmin = user?.role === ROLES.Admin;
+    document.body.classList.toggle('admin-dashboard-view', isAdmin);
   }
 
   render() {

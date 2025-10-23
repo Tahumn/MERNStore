@@ -1,6 +1,7 @@
 const Mongoose = require('mongoose');
 const slug = require('mongoose-slug-generator');
 const { Schema } = Mongoose;
+const { selectProductImage } = require('../utils/productImage');
 
 const options = {
   separator: '-',
@@ -48,6 +49,10 @@ const ProductSchema = new Schema({
     type: Boolean,
     default: true
   },
+  isFeatured: {
+    type: Boolean,
+    default: false
+  },
   brand: {
     type: Schema.Types.ObjectId,
     ref: 'Brand',
@@ -58,6 +63,14 @@ const ProductSchema = new Schema({
     type: Date,
     default: Date.now
   }
+});
+
+ProductSchema.pre('save', function preSave(next) {
+  if (!this.imageUrl) {
+    this.imageUrl = selectProductImage(this);
+  }
+
+  next();
 });
 
 module.exports = Mongoose.model('Product', ProductSchema);

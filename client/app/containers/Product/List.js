@@ -20,6 +20,10 @@ class List extends React.PureComponent {
     this.props.fetchProducts();
   }
 
+  handleAddProductClick = () => {
+    this.props.history.push('/dashboard/product/add');
+  };
+
   render() {
     const { history, products, isLoading } = this.props;
 
@@ -28,7 +32,7 @@ class List extends React.PureComponent {
         <SubPage
           title='Products'
           actionTitle='Add'
-          handleAction={() => history.push('/dashboard/product/add')}
+          handleAction={this.handleAddProductClick}
         >
           {isLoading ? (
             <LoadingIndicator inline />

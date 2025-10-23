@@ -28,6 +28,32 @@ const EditAddress = props => {
           <Col xs='12' md='12'>
             <Input
               type={'text'}
+              error={formErrors['fullName']}
+              label={'Full Name'}
+              name={'fullName'}
+              placeholder={'Recipient Full Name'}
+              value={address.fullName}
+              onInputChange={(name, value) => {
+                addressChange(name, value);
+              }}
+            />
+          </Col>
+          <Col xs='12' md='12'>
+            <Input
+              type={'text'}
+              error={formErrors['phoneNumber']}
+              label={'Phone Number'}
+              name={'phoneNumber'}
+              placeholder={'Contact Phone Number'}
+              value={address.phoneNumber}
+              onInputChange={(name, value) => {
+                addressChange(name, value);
+              }}
+            />
+          </Col>
+          <Col xs='12' md='12'>
+            <Input
+              type={'text'}
               error={formErrors['address']}
               label={'Address'}
               name={'address'}

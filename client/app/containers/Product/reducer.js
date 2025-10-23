@@ -41,11 +41,12 @@ const initialState = {
     price: 1,
     image: {},
     isActive: true,
-    taxable: { value: 0, label: 'No' },
-    brand: {
-      value: 0,
-      label: 'No Options Selected'
-    }
+     isFeatured: false,
+     taxable: { value: 0, label: 'No' },
+     brand: {
+       value: 0,
+       label: 'No Options Selected'
+     }
   },
   isLoading: false,
   productShopData: {
@@ -167,6 +168,7 @@ const productReducer = (state = initialState, action) => {
           price: 1,
           image: {},
           isActive: true,
+          isFeatured: false,
           taxable: { value: 0, label: 'No' },
           brand: {
             value: 0,

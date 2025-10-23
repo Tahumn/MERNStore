@@ -5,7 +5,7 @@
  */
 
 import { push } from 'connected-react-router';
-import { success } from 'react-notification-system-redux';
+import { success, error as notifyError } from 'react-notification-system-redux';
 import axios from 'axios';
 
 import {
@@ -14,7 +14,8 @@ import {
   REMOVE_FROM_CART,
   HANDLE_CART_TOTAL,
   SET_CART_ID,
-  CLEAR_CART
+  CLEAR_CART,
+  UPDATE_CART_ITEM
 } from './constants';
 
 import {
@@ -30,10 +31,14 @@ import { toggleCart } from '../Navigation/actions';
 // Handle Add To Cart
 export const handleAddToCart = product => {
   return (dispatch, getState) => {
-    product.quantity = Number(getState().product.productShopData.quantity);
+    const state = getState();
+    const selectedQuantity = Number(state.product.productShopData.quantity);
+    const inventory = product?.inventory ?? product?.quantity ?? 0;
+
+    product.quantity = selectedQuantity;
     product.totalPrice = product.quantity * product.price;
     product.totalPrice = parseFloat(product.totalPrice.toFixed(2));
-    const inventory = getState().product.storeProduct.inventory;
+    product.inventory = inventory;
 
     const result = calculatePurchaseQuantity(inventory);
 
@@ -86,6 +91,137 @@ export const handleRemoveFromCart = product => {
     });
     dispatch(calculateCartTotal());
     // dispatch(toggleCart());
+  };
+};
+
+export const updateCartItemQuantity = (productId, quantity) => {
+  return (dispatch, getState) => {
+    const sanitizedQuantity = Math.max(Number(quantity) || 1, 1);
+
+    const cartItems = getState().cart.cartItems.map(item => {
+      if (item._id === productId) {
+        const available =
+          item?.inventory ??
+          item?.quantityAvailable ??
+          item?.stock ??
+          item?.quantity ??
+          sanitizedQuantity;
+        const clampedQuantity = Math.min(sanitizedQuantity, available);
+        const updated = {
+          ...item,
+          quantity: clampedQuantity,
+          totalPrice: parseFloat((item.price * clampedQuantity).toFixed(2))
+        };
+
+        return updated;
+      }
+
+      return item;
+    });
+
+    localStorage.setItem(CART_ITEMS, JSON.stringify(cartItems));
+
+    dispatch({
+      type: UPDATE_CART_ITEM,
+      payload: cartItems
+    });
+
+    dispatch(calculateCartTotal());
+  };
+};
+
+export const startCheckout = () => {
+  return (dispatch, getState) => {
+    const cartItems = getState().cart.cartItems;
+
+    if (!cartItems || cartItems.length < 1) {
+      return;
+    }
+
+    localStorage.removeItem(CART_ID);
+    dispatch(toggleCart());
+    dispatch(push('/checkout'));
+  };
+};
+
+export const quickAddToCart = product => {
+  return (dispatch, getState) => {
+    if (!product || !product._id) {
+      return;
+    }
+
+    const inventory =
+      product?.inventory ?? product?.quantity ?? product?.available ?? 0;
+
+    if (!inventory || inventory < 1) {
+      dispatch(
+        notifyError({
+          title: 'This product is currently out of stock.',
+          position: 'tr',
+          autoDismiss: 2
+        })
+      );
+      return;
+    }
+
+    const cartItems = getState().cart.cartItems;
+    const existingItem = cartItems.find(item => item._id === product._id);
+    let updatedItems = [];
+
+    if (existingItem) {
+      const nextQuantity = Math.min(existingItem.quantity + 1, inventory);
+
+      if (nextQuantity === existingItem.quantity) {
+        dispatch(
+          notifyError({
+            title: 'Maximum available quantity already in cart.',
+            position: 'tr',
+            autoDismiss: 2
+          })
+        );
+        return;
+      }
+
+      updatedItems = cartItems.map(item =>
+        item._id === product._id
+          ? {
+              ...item,
+              quantity: nextQuantity,
+              totalPrice: parseFloat((item.price * nextQuantity).toFixed(2)),
+              inventory
+            }
+          : item
+      );
+
+      localStorage.setItem(CART_ITEMS, JSON.stringify(updatedItems));
+
+      dispatch({
+        type: UPDATE_CART_ITEM,
+        payload: updatedItems
+      });
+    } else {
+      const newItem = {
+        ...product,
+        quantity: 1,
+        totalPrice: parseFloat(Number(product.price).toFixed(2)),
+        inventory
+      };
+
+      updatedItems = [...cartItems, newItem];
+      localStorage.setItem(CART_ITEMS, JSON.stringify(updatedItems));
+
+      dispatch({
+        type: ADD_TO_CART,
+        payload: newItem
+      });
+    }
+
+    dispatch(calculateCartTotal());
+
+    const isCartOpen = getState().navigation?.isCartOpen;
+    if (!isCartOpen) {
+      dispatch(toggleCart());
+    }
   };
 };
 
@@ -206,13 +342,9 @@ const getCartItems = cartItems => {
 };
 
 const calculatePurchaseQuantity = inventory => {
-  if (inventory <= 25) {
+  if (!inventory || inventory < 1) {
     return 1;
-  } else if (inventory > 25 && inventory <= 100) {
-    return 5;
-  } else if (inventory > 100 && inventory < 500) {
-    return 25;
-  } else {
-    return 50;
   }
+
+  return Number(inventory);
 };

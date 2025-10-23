@@ -148,6 +148,15 @@ const AddProduct = props => {
           </Col>
           <Col xs='12' md='12' className='my-2'>
             <Switch
+              id={'featured-product'}
+              name={'isFeatured'}
+              label={'Featured?'}
+              checked={productFormData.isFeatured}
+              toggleCheckboxChange={value => productChange('isFeatured', value)}
+            />
+          </Col>
+          <Col xs='12' md='12' className='my-2'>
+            <Switch
               id={'active-product'}
               name={'isActive'}
               label={'Active?'}

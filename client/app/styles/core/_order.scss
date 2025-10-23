@@ -64,6 +64,33 @@
     text-transform: capitalize;
     margin-bottom: 5px;
   }
+
+  .order-meta-heading {
+    font-size: 0.9rem;
+    font-weight: $font-weight-semibold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+    color: $gray-700;
+  }
+
+  .order-shipping-box {
+    border: 1px solid $border-default;
+    border-radius: $border-radius-default;
+    padding: 12px 14px;
+    background-color: rgba($primary, 0.02);
+
+    .order-label {
+      display: block;
+      text-transform: none;
+    }
+  }
+
+  .order-note {
+    font-size: 0.85rem;
+    color: $gray-600;
+    text-transform: none;
+  }
 }
 /* end order meta styles */
 

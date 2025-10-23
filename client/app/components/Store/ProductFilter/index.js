@@ -63,6 +63,10 @@ const rateMarks = {
 };
 
 const rating = v => {
+  if (typeof v !== 'number') {
+    return 5;
+  }
+
   switch (v) {
     case 100:
       return 0;
@@ -75,7 +79,6 @@ const rating = v => {
     case 20:
       return 4;
     default:
-      0;
       return 5;
   }
 };
@@ -108,7 +111,7 @@ const ProductFilter = props => {
               type='slider'
               marks={rateMarks}
               step={20}
-              defaultValue={[100]}
+              defaultValue={100}
               onChange={v => {
                 filterProducts('rating', rating(v));
               }}

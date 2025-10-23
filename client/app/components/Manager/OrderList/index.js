@@ -10,6 +10,21 @@ import { Link } from 'react-router-dom';
 
 import { formatDate } from '../../../utils/date';
 
+const PAYMENT_LABELS = {
+  COD: 'Cash on Delivery',
+  BANK_TRANSFER: 'Bank Transfer',
+  EWALLET: 'E-Wallet / QR Payment',
+  CARD: 'Credit / Debit Card (Offline)'
+};
+
+const formatPaymentMethod = method => {
+  if (!method) {
+    return 'Not specified';
+  }
+
+  return PAYMENT_LABELS[method] ?? method;
+};
+
 const OrderList = props => {
   const { orders } = props;
 
@@ -65,6 +80,24 @@ const OrderList = props => {
                     <span className='order-label'>{` $${
                       order?.totalWithTax ? order?.totalWithTax : 0
                     }`}</span>
+                  </div>
+                  {order?.shipping?.fullName && (
+                    <div className='mb-1'>
+                      <span>Ship to</span>
+                      <span className='order-label'>{` ${order.shipping.fullName}`}</span>
+                    </div>
+                  )}
+                  {order?.shipping?.phoneNumber && (
+                    <div className='mb-1'>
+                      <span>Contact</span>
+                      <span className='order-label'>{` ${order.shipping.phoneNumber}`}</span>
+                    </div>
+                  )}
+                  <div className='mb-1'>
+                    <span>Payment</span>
+                    <span className='order-label'>{` ${formatPaymentMethod(
+                      order?.payment?.method
+                    )}`}</span>
                   </div>
                 </div>
               </div>

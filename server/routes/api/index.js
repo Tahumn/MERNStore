@@ -13,6 +13,7 @@ const cartRoutes = require('./cart');
 const orderRoutes = require('./order');
 const reviewRoutes = require('./review');
 const wishlistRoutes = require('./wishlist');
+const dashboardRoutes = require('./dashboard');
 
 // auth routes
 router.use('/auth', authRoutes);
@@ -29,6 +30,31 @@ router.use('/newsletter', newsletterRoutes);
 // product routes
 router.use('/product', productRoutes);
 
+// category routes
+router.use('/category', categoryRoutes);
 
+// brand routes
+router.use('/brand', brandRoutes);
+
+// contact routes
+router.use('/contact', contactRoutes);
+
+// merchant routes
+router.use('/merchant', merchantRoutes);
+
+// cart routes
+router.use('/cart', cartRoutes);
+
+// order routes
+router.use('/order', orderRoutes);
+
+// Review routes
+router.use('/review', reviewRoutes);
+
+// Wishlist routes
+router.use('/wishlist', wishlistRoutes);
+
+// Dashboard routes
+router.use('/dashboard', dashboardRoutes);
 
 module.exports = router;

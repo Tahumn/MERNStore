@@ -47,6 +47,13 @@ class List extends React.PureComponent {
     this.props.fetchAccountOrders(v);
   };
 
+  handleCustomerOrdersClick = () => {
+    const { history, user } = this.props;
+    if (user.role === ROLES.Admin) {
+      history.push('/dashboard/orders/customers');
+    }
+  };
+
   render() {
     const { history, user, orders, isLoading, advancedFilters } = this.props;
     const { search } = this.state;
@@ -63,10 +70,7 @@ class List extends React.PureComponent {
         <SubPage
           title='Your Orders'
           actionTitle={user.role === ROLES.Admin && 'Customer Orders'}
-          handleAction={() =>
-            user.role === ROLES.Admin &&
-            history.push('/dashboard/orders/customers')
-          }
+          handleAction={this.handleCustomerOrdersClick}
         >
           <OrderSearch
             onBlur={this.handleOrderSearch}

@@ -1,42 +1,66 @@
-require('dotenv').config(); // <-- THÊM DÒNG NÀY Ở ĐÂY
+require('dotenv').config();
+
+const getEnv = (key, fallback = undefined) => {
+  const value = process.env[key];
+
+  if (typeof value !== 'string') {
+    return fallback;
+  }
+
+  const trimmed = value.trim();
+  return trimmed.length > 0 ? trimmed : fallback;
+};
+
+const normalisePath = value => value.replace(/^\/+/, '').replace(/\/+$/, '');
+const normaliseUrl = value => value.replace(/\/+$/, '');
+
+const appName = getEnv('APP_NAME', 'Mern Ecommerce');
+const apiPath = normalisePath(getEnv('BASE_API_URL', 'api'));
+const clientURL = normaliseUrl(getEnv('CLIENT_URL', 'http://localhost:8081'));
+const defaultDbUri = 'mongodb://127.0.0.1:27017/mern_ecommerce';
+
+const toInt = (value, fallback) => {
+  const parsed = Number.parseInt(value, 10);
+  return Number.isNaN(parsed) ? fallback : parsed;
+};
 
 module.exports = {
   app: {
-    name: 'Mern Ecommerce',
-    apiURL: `${process.env.BASE_API_URL}`,
-    clientURL: process.env.CLIENT_URL
+    name: appName,
+    apiURL: apiPath,
+    clientURL
   },
-  port: process.env.PORT || 3000,
+  port: toInt(getEnv('PORT'), 3000),
   database: {
-    url: process.env.MONGO_URI
+    url: getEnv('MONGO_URI', defaultDbUri)
   },
   jwt: {
-    secret: process.env.JWT_SECRET,
-    tokenLife: '7d'
+    secret: getEnv('JWT_SECRET', 'secret_key_123'),
+    tokenLife: getEnv('JWT_TOKEN_LIFE', '7d')
   },
   mailchimp: {
-    key: process.env.MAILCHIMP_KEY,
-    listKey: process.env.MAILCHIMP_LIST_KEY
+    key: getEnv('MAILCHIMP_KEY', null),
+    listKey: getEnv('MAILCHIMP_LIST_KEY', null)
   },
   mailgun: {
-    key: process.env.MAILGUN_KEY,
-    domain: process.env.MAILGUN_DOMAIN,
-    sender: process.env.MAILGUN_EMAIL_SENDER
+    key: getEnv('MAILGUN_KEY', null),
+    domain: getEnv('MAILGUN_DOMAIN', null),
+    sender: getEnv('MAILGUN_EMAIL_SENDER', null)
   },
   google: {
-    clientID: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: process.env.GOOGLE_CALLBACK_URL
+    clientID: getEnv('GOOGLE_CLIENT_ID', null),
+    clientSecret: getEnv('GOOGLE_CLIENT_SECRET', null),
+    callbackURL: getEnv('GOOGLE_CALLBACK_URL', null)
   },
   facebook: {
-    clientID: process.env.FACEBOOK_CLIENT_ID,
-    clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
-    callbackURL: process.env.FACEBOOK_CALLBACK_URL
+    clientID: getEnv('FACEBOOK_CLIENT_ID', null),
+    clientSecret: getEnv('FACEBOOK_CLIENT_SECRET', null),
+    callbackURL: getEnv('FACEBOOK_CALLBACK_URL', null)
   },
   aws: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-    region: process.env.AWS_REGION,
-    bucketName: process.env.AWS_BUCKET_NAME
+    accessKeyId: getEnv('AWS_ACCESS_KEY_ID', null),
+    secretAccessKey: getEnv('AWS_SECRET_ACCESS_KEY', null),
+    region: getEnv('AWS_REGION', null),
+    bucketName: getEnv('AWS_BUCKET_NAME', null)
   }
 };

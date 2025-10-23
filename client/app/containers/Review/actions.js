@@ -140,7 +140,6 @@ export const addProductReview = () => {
   return async (dispatch, getState) => {
     try {
       const rules = {
-        title: 'required',
         review: 'required',
         rating: 'required|numeric|min:1',
         isRecommended: 'required'
@@ -153,12 +152,10 @@ export const addProductReview = () => {
         product: product._id,
         isRecommended: review.isRecommended.value,
         rating: review.rating,
-        review: review.review,
-        title: review.title
+        review: review.review
       };
 
       const { isValid, errors } = allFieldsValidation(newReview, rules, {
-        'required.title': 'Title is required.',
         'required.review': 'Review is required.',
         'required.rating': 'Rating is required.',
         'min.rating': 'Rating is required.',
@@ -184,12 +181,25 @@ export const addProductReview = () => {
 
       if (response.data.success === true) {
         dispatch(success(successfulOptions));
+
+        const account = getState().account.user || {};
+        const hydratedReview = {
+          ...response.data.review,
+          user: {
+            firstName: account.firstName || 'Customer'
+          },
+          created: new Date().toISOString(),
+          rating: newReview.rating,
+          isRecommended: newReview.isRecommended
+        };
+
+        dispatch({
+          type: ADD_REVIEW,
+          payload: hydratedReview
+        });
+
         dispatch(fetchProductReviews(product.slug));
 
-        // dispatch({
-        //   type: ADD_REVIEW,
-        //   payload: response.data.review
-        // });
         dispatch({ type: RESET_REVIEW });
       }
     } catch (error) {

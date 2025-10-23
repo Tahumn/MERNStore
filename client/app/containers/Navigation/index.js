@@ -27,6 +27,7 @@ import {
 } from 'reactstrap';
 
 import actions from '../../actions';
+import { ROLES } from '../../constants';
 
 import Button from '../../components/Common/Button';
 import CartIcon from '../../components/Common/CartIcon';
@@ -86,6 +87,13 @@ class Navigation extends React.PureComponent {
                 ? suggestion.imageUrl
                 : '/images/placeholder-image.png'
             }`}
+            loading='lazy'
+            decoding='async'
+            onError={event => {
+              if (!event?.target) return;
+              event.target.onerror = null;
+              event.target.src = '/images/placeholder-image.png';
+            }}
           />
           <div>
             <Container>
@@ -126,6 +134,64 @@ class Navigation extends React.PureComponent {
       onSuggestionsFetchRequested,
       onSuggestionsClearRequested
     } = this.props;
+    const isAdmin = authenticated && user?.role === ROLES.Admin;
+
+    if (isAdmin) {
+      const adminLinks = [
+        { to: '/dashboard', label: 'Overview', exact: true },
+        { to: '/dashboard/orders', label: 'Orders' },
+        { to: '/dashboard/product', label: 'Products' },
+        { to: '/dashboard/users', label: 'Users' }
+      ];
+
+      return (
+        <header className='navigation admin-navigation shadow-sm'>
+          <Container fluid>
+            <Row className='align-items-center admin-nav-top py-3'>
+              <Col xs='12' md='6'>
+                <Link className='navbar-brand admin-brand' to='/dashboard'>
+                  Store Admin
+                </Link>
+              </Col>
+              <Col
+                xs='12'
+                md='6'
+                className='admin-nav-actions text-md-right mt-3 mt-md-0'
+              >
+                <span className='admin-user mr-md-3 d-inline-block'>
+                  {user?.firstName ? `Hi, ${user.firstName}` : 'Administrator'}
+                </span>
+                <Button
+                  variant='link'
+                  className='mr-2'
+                  text='View Store'
+                  onClick={() => history.push('/shop')}
+                />
+                <Button variant='secondary' text='Sign Out' onClick={signOut} />
+              </Col>
+            </Row>
+            <Row className='admin-nav-links pb-3'>
+              <Col>
+                <Nav className='admin-primary-nav'>
+                  {adminLinks.map(link => (
+                    <NavItem key={link.to}>
+                      <NavLink
+                        tag={ActiveLink}
+                        to={link.to}
+                        exact={link.exact}
+                        activeClassName='active'
+                      >
+                        {link.label}
+                      </NavLink>
+                    </NavItem>
+                  ))}
+                </Nav>
+              </Col>
+            </Row>
+          </Container>
+        </header>
+      );
+    }
 
     const inputProps = {
       placeholder: 'Search Products',

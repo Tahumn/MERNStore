@@ -3,91 +3,94 @@ const JwtStrategy = require('passport-jwt').Strategy;
 const GoogleStrategy = require('passport-google-oauth2').Strategy;
 const FacebookStrategy = require('passport-facebook').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
-const mongoose = require('mongoose');
 
 const keys = require('./keys');
 const { EMAIL_PROVIDER } = require('../constants');
 
-const { google, facebook } = keys;
-
-const User = mongoose.model('User');
+const User = require('../models/user');
+const { google = {}, facebook = {} } = keys;
 const secret = keys.jwt.secret;
 
-const opts = {};
-opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
-opts.secretOrKey = secret;
+// JWT STRATEGY
+const opts = {
+  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+  secretOrKey: secret,
+};
 
 passport.use(
   new JwtStrategy(opts, (payload, done) => {
     User.findById(payload.id)
-      .then(user => {
-        if (user) {
-          return done(null, user);
-        }
-
-        return done(null, false);
-      })
-      .catch(err => {
-        return done(err, false);
-      });
+      .then((user) => (user ? done(null, user) : done(null, false)))
+      .catch((err) => done(err, false));
   })
 );
 
-module.exports = async app => {
+module.exports = (app) => {
   app.use(passport.initialize());
-
-  await googleAuth();
-  await facebookAuth();
+  googleAuth();
+  facebookAuth();
 };
 
-const googleAuth = async () => {
+// GOOGLE AUTH
+const googleAuth = () => {
+  const hasKeys =
+    Boolean(google.clientID && google.clientSecret && google.callbackURL);
+
+  if (!hasKeys) {
+    console.info('Google OAuth keys are missing. Google login is disabled.');
+    return;
+  }
+
   try {
     passport.use(
       new GoogleStrategy(
         {
           clientID: google.clientID,
           clientSecret: google.clientSecret,
-          callbackURL: google.callbackURL
+          callbackURL: google.callbackURL,
         },
         (accessToken, refreshToken, profile, done) => {
           User.findOne({ email: profile.email })
-            .then(user => {
-              if (user) {
-                return done(null, user);
-              }
+            .then((user) => {
+              if (user) return done(null, user);
 
-              const name = profile.displayName.split(' ');
+              const name = profile.displayName?.split(' ') || [''];
 
               const newUser = new User({
                 provider: EMAIL_PROVIDER.Google,
                 googleId: profile.id,
                 email: profile.email,
                 firstName: name[0],
-                lastName: name[1],
+                lastName: name[1] || '',
                 avatar: profile.picture,
-                password: null
+                password: null,
               });
 
-              newUser.save((err, user) => {
-                if (err) {
-                  return done(err, false);
-                }
-
-                return done(null, user);
-              });
+              newUser.save((err, user) =>
+                err ? done(err, false) : done(null, user)
+              );
             })
-            .catch(err => {
-              return done(err, false);
-            });
+            .catch((err) => done(err, false));
         }
       )
     );
   } catch (error) {
-    console.log('Missing google keys');
+    console.log('Failed to initialise Google OAuth strategy:', error);
   }
 };
 
-const facebookAuth = async () => {
+// FACEBOOK AUTH
+const facebookAuth = () => {
+  const hasKeys =
+    Boolean(
+      facebook.clientID && facebook.clientSecret && facebook.callbackURL
+    );
+
+  if (!hasKeys) {
+    console.info('Facebook OAuth keys are missing. Facebook login is disabled.');
+    return;
+  }
+
   try {
     passport.use(
       new FacebookStrategy(
@@ -100,41 +103,33 @@ const facebookAuth = async () => {
             'displayName',
             'name',
             'emails',
-            'picture.type(large)'
-          ]
+            'picture.type(large)',
+          ],
         },
         (accessToken, refreshToken, profile, done) => {
           User.findOne({ facebookId: profile.id })
-            .then(user => {
-              if (user) {
-                return done(null, user);
-              }
+            .then((user) => {
+              if (user) return done(null, user);
 
               const newUser = new User({
                 provider: EMAIL_PROVIDER.Facebook,
                 facebookId: profile.id,
                 email: profile.emails ? profile.emails[0].value : null,
-                firstName: profile.name.givenName,
-                lastName: profile.name.familyName,
-                avatar: profile.photos[0].value,
-                password: null
+                firstName: profile.name?.givenName || '',
+                lastName: profile.name?.familyName || '',
+                avatar: profile.photos?.[0]?.value || null,
+                password: null,
               });
 
-              newUser.save((err, user) => {
-                if (err) {
-                  return done(err, false);
-                }
-
-                return done(null, user);
-              });
+              newUser.save((err, user) =>
+                err ? done(err, false) : done(null, user)
+              );
             })
-            .catch(err => {
-              return done(err, false);
-            });
+            .catch((err) => done(err, false));
         }
       )
     );
   } catch (error) {
-    console.log('Missing facebook keys');
+    console.log('Failed to initialise Facebook OAuth strategy:', error);
   }
 };

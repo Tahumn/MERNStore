@@ -10,6 +10,7 @@ import { Row, Col } from 'reactstrap';
 import { Link } from 'react-router-dom';
 
 import actions from '../../actions';
+import { ROLES } from '../../constants';
 
 import Input from '../../components/Common/Input';
 import Button from '../../components/Common/Button';
@@ -53,8 +54,13 @@ class ProductPage extends React.PureComponent {
       reviews,
       reviewFormData,
       reviewChange,
-      reviewFormErrors
+      reviewFormErrors,
+      user
     } = this.props;
+
+    const availableStock =
+      Number(product?.inventory ?? product?.quantity ?? 0) || 0;
+    const isAdmin = user?.role === ROLES.Admin;
 
     return (
       <div className='product-shop'>
@@ -73,11 +79,15 @@ class ProductPage extends React.PureComponent {
                         : '/images/placeholder-image.png'
                     }`}
                   />
-                  {product.inventory <= 0 && !shopFormErrors['quantity'] ? (
-                    <p className='stock out-of-stock'>Out of stock</p>
-                  ) : (
-                    <p className='stock in-stock'>In stock</p>
-                  )}
+                  <p
+                    className={`stock ${
+                      availableStock > 0 ? 'in-stock' : 'out-of-stock'
+                    }`}
+                  >
+                    {availableStock > 0
+                      ? `In stock (${availableStock} available)`
+                      : 'Out of stock'}
+                  </p>
                 </div>
               </Col>
               <Col xs='12' md='7' lg='7' className='mb-3 px-3 px-md-2'>
@@ -102,6 +112,22 @@ class ProductPage extends React.PureComponent {
                       )}
                       <p className='item-desc'>{product.description}</p>
                       <p className='price'>${product.price}</p>
+                      <ul className='product-meta list-unstyled mb-3'>
+                        <li>
+                          <span className='label'>SKU:</span>
+                          <span className='value'>{product.sku || 'N/A'}</span>
+                        </li>
+                        {product.brand?.name && (
+                          <li>
+                            <span className='label'>Brand:</span>
+                            <span className='value'>{product.brand.name}</span>
+                          </li>
+                        )}
+                        <li>
+                          <span className='label'>Tồn kho:</span>
+                          <span className='value'>{availableStock} sản phẩm</span>
+                        </li>
+                      </ul>
                     </div>
                     <div className='item-customize'>
                       <Input
@@ -111,28 +137,31 @@ class ProductPage extends React.PureComponent {
                         name={'quantity'}
                         decimals={false}
                         min={1}
-                        max={product.inventory}
+                        max={availableStock || undefined}
                         placeholder={'Product Quantity'}
                         disabled={
-                          product.inventory <= 0 && !shopFormErrors['quantity']
+                          isAdmin ||
+                          (availableStock <= 0 && !shopFormErrors['quantity'])
                         }
                         value={productShopData.quantity}
                         onInputChange={(name, value) => {
                           productShopChange(name, value);
                         }}
                       />
+                      <p className='stock-overview'>{`Available: ${availableStock}`}</p>
                     </div>
                     <div className='my-4 item-share'>
                       <SocialShare product={product} />
                     </div>
                     <div className='item-actions'>
-                      {itemInCart ? (
+                      {isAdmin ? (
+                        <p className='text-muted small mb-0'>
+                          Store admin accounts can manage products but cannot
+                          place customer orders.
+                        </p>
+                      ) : itemInCart ? (
                         <Button
                           variant='primary'
-                          disabled={
-                            product.inventory <= 0 &&
-                            !shopFormErrors['quantity']
-                          }
                           text='Remove From Bag'
                           className='bag-btn'
                           icon={<BagIcon />}
@@ -142,7 +171,7 @@ class ProductPage extends React.PureComponent {
                         <Button
                           variant='primary'
                           disabled={
-                            product.quantity <= 0 && !shopFormErrors['quantity']
+                            availableStock <= 0 && !shopFormErrors['quantity']
                           }
                           text='Add To Bag'
                           className='bag-btn'
@@ -173,11 +202,12 @@ class ProductPage extends React.PureComponent {
 }
 
 const mapStateToProps = state => {
-  const itemInCart = state.cart.cartItems.find(
-    item => item._id === state.product.storeProduct._id
-  )
-    ? true
+  const storeProductId = state.product.storeProduct?._id;
+  const hasItemInCart = storeProductId
+    ? state.cart.cartItems.some(item => item._id === storeProductId)
     : false;
+  const isAdmin = state.account.user?.role === ROLES.Admin;
+  const itemInCart = !isAdmin && hasItemInCart;
 
   return {
     product: state.product.storeProduct,
@@ -188,7 +218,8 @@ const mapStateToProps = state => {
     reviewsSummary: state.review.reviewsSummary,
     reviewFormData: state.review.reviewFormData,
     reviewFormErrors: state.review.reviewFormErrors,
-    itemInCart
+    itemInCart,
+    user: state.account.user
   };
 };
 

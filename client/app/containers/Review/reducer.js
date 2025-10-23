@@ -32,7 +32,6 @@ const initialState = {
     totalSummary: 0
   },
   reviewFormData: {
-    title: '',
     review: '',
     rating: 0,
     isRecommended: {
@@ -95,7 +94,6 @@ const reviewReducer = (state = initialState, action) => {
       return {
         ...state,
         reviewFormData: {
-          title: '',
           review: '',
           rating: 0,
           isRecommended: {

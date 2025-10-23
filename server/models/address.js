@@ -7,6 +7,14 @@ const AddressSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'User'
   },
+  fullName: {
+    type: String,
+    trim: true
+  },
+  phoneNumber: {
+    type: String,
+    trim: true
+  },
   address: {
     type: String
   },

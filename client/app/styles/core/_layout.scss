@@ -50,6 +50,18 @@ body {
   }
 }
 
+body.admin-dashboard-view {
+  background-color: #f5f7fb;
+
+  .wrapper {
+    padding: 70px 0 40px;
+
+    @include media-breakpoint-up(md) {
+      padding: 40px 0;
+    }
+  }
+}
+
 img {
   border-style: none;
   vertical-align: middle;

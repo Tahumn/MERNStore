@@ -186,10 +186,13 @@ router.post('/forgot', async (req, res) => {
 
     existingUser.save();
 
+    const origin =
+      req.get('origin') || `${req.protocol}://${req.get('host')}`;
+
     await mailgun.sendEmail(
       existingUser.email,
       'reset',
-      req.headers.host,
+      origin,
       resetToken
     );
 

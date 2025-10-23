@@ -8,6 +8,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import actions from '../../actions';
+import { ROLES } from '../../constants';
 
 import ProductList from '../../components/Store/ProductList';
 import NotFound from '../../components/Common/NotFound';
@@ -27,7 +28,16 @@ class CategoryShop extends React.PureComponent {
   }
 
   render() {
-    const { products, isLoading, authenticated, updateWishlist } = this.props;
+    const {
+      products,
+      isLoading,
+      authenticated,
+      updateWishlist,
+      quickAddToCart,
+      userRole
+    } = this.props;
+
+    const isAdmin = userRole === ROLES.Admin;
 
     return (
       <div className='category-shop'>
@@ -37,6 +47,9 @@ class CategoryShop extends React.PureComponent {
             products={products}
             authenticated={authenticated}
             updateWishlist={updateWishlist}
+            allowWishlist={!isAdmin}
+            canPurchase={!isAdmin}
+            onAddToCart={isAdmin ? undefined : quickAddToCart}
           />
         )}
         {!isLoading && products && products.length <= 0 && (
@@ -51,7 +64,8 @@ const mapStateToProps = state => {
   return {
     products: state.product.storeProducts,
     isLoading: state.product.isLoading,
-    authenticated: state.authentication.authenticated
+    authenticated: state.authentication.authenticated,
+    userRole: state.account.user?.role
   };
 };
 

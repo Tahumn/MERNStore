@@ -1,0 +1,18 @@
+// {
+//   "editor.formatOnSave": true,
+//   "prettier.singleQuote": true,
+//   "prettier.arrowParens": "avoid",
+//   "prettier.jsxSingleQuote": true,
+//   "prettier.trailingComma": "none",
+//   "jumpToAliasFile.alias": {
+//     "app": "client/app"
+//   }
+// }
+{
+  "editor.formatOnSave": true,
+  "prettier.singleQuote": true,
+  "prettier.arrowParens": "avoid",
+  "prettier.jsxSingleQuote": true,
+  "prettier.trailingComma": "none",
+  "javascript.preferences.quoteStyle": "single",
+}

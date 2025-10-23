@@ -9,7 +9,7 @@ const UserSchema = new Schema({
   email: {
     type: String,
     required: () => {
-      return this.provider !== 'email' ? false : true;
+      return this.provider !== EMAIL_PROVIDER.Email ? false : true;
     }
   },
   phoneNumber: {

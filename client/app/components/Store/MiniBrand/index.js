@@ -29,18 +29,21 @@ const MiniBrand = props => {
         </Link>
       </div>
       <div className='mini-brand-block'>
-        {brands.map((brand, index) => (
-          <div key={index} className='brand-item'>
-            <Link
-              to={`/shop/brand/${brand.slug}`}
-              className='brand-link'
-              role='menuitem'
-              onClick={handleMenuItemClick}
-            >
-              {brand.name}
-            </Link>
-          </div>
-        ))}
+        {brands.map(brand => {
+          const key = brand?._id || brand?.slug || brand?.name;
+          return (
+            <div key={key} className='brand-item'>
+              <Link
+                to={`/shop/brand/${brand.slug}`}
+                className='brand-link'
+                role='menuitem'
+                onClick={handleMenuItemClick}
+              >
+                {brand.name}
+              </Link>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

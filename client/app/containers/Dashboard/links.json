@@ -1,6 +1,7 @@
 {
   "ROLE ADMIN": [
-    { "to": "", "name": "Account Details", "prefix": "/dashboard" },
+    { "to": "", "name": "Overview", "prefix": "/dashboard" },
+    { "to": "/profile", "name": "Account Details", "prefix": "/dashboard" },
     {
       "to": "/security",
       "name": "Account Security",

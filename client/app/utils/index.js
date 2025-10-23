@@ -56,14 +56,17 @@ export const getRandomColors = () => {
 };
 
 let cache = {};
-export const getMemoizedRandomColors = s => {
-  const color = getRandomColors();
+export const getMemoizedRandomColors = key => {
+  const cacheKey =
+    typeof key === 'string' || typeof key === 'number'
+      ? String(key)
+      : '__unknown__';
 
-  if (s in cache) {
-    return cache[s];
-  } else {
-    let result = color;
-    cache[s] = result;
-    return result;
+  if (Object.prototype.hasOwnProperty.call(cache, cacheKey)) {
+    return cache[cacheKey];
   }
+
+  const color = getRandomColors();
+  cache[cacheKey] = color;
+  return color;
 };

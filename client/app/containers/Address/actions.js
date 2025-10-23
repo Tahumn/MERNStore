@@ -93,6 +93,8 @@ export const addAddress = () => {
   return async (dispatch, getState) => {
     try {
       const rules = {
+        fullName: 'required|min:2',
+        phoneNumber: 'required|min:8',
         address: 'required',
         city: 'required',
         state: 'required',
@@ -104,6 +106,10 @@ export const addAddress = () => {
       const isDefault = getState().address.isDefault;
 
       const { isValid, errors } = allFieldsValidation(newAddress, rules, {
+        'required.fullName': 'Full name is required.',
+        'min.fullName': 'Full name must be at least 2 characters.',
+        'required.phoneNumber': 'Phone number is required.',
+        'min.phoneNumber': 'Phone number must be at least 8 digits.',
         'required.address': 'Address is required.',
         'required.city': 'City is required.',
         'required.state': 'State is required.',
@@ -148,6 +154,8 @@ export const updateAddress = () => {
   return async (dispatch, getState) => {
     try {
       const rules = {
+        fullName: 'required|min:2',
+        phoneNumber: 'required|min:8',
         country: 'required',
         city: 'required',
         state: 'required',
@@ -158,6 +166,10 @@ export const updateAddress = () => {
       const newAddress = getState().address.address;
 
       const { isValid, errors } = allFieldsValidation(newAddress, rules, {
+        'required.fullName': 'Full name is required.',
+        'min.fullName': 'Full name must be at least 2 characters.',
+        'required.phoneNumber': 'Phone number is required.',
+        'min.phoneNumber': 'Phone number must be at least 8 digits.',
         'required.address': 'Address is required.',
         'required.city': 'City is required.',
         'required.state': 'State is required.',

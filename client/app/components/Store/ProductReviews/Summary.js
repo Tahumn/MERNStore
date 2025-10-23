@@ -25,7 +25,6 @@ const Summary = props => {
 
   return (
     <div className='bg-white p-4 box-shadow-primary review-summary'>
-      <h2 className='mb-0'>Rating</h2>
       {averageRating && (
         <div className='d-flex flex-wrap align-items-center mt-2'>
           <ReactStars

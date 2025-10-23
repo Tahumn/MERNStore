@@ -240,6 +240,7 @@ export const addProduct = () => {
         quantity: product.quantity,
         image: product.image,
         isActive: product.isActive,
+        isFeatured: product.isFeatured,
         taxable: product.taxable.value,
         brand:
           user.role !== ROLES.Merchant
@@ -332,6 +333,7 @@ export const updateProduct = () => {
         quantity: product.quantity,
         price: product.price,
         taxable: product.taxable,
+        isFeatured: product.isFeatured,
         brand: brand != 0 ? brand : null
       };
 

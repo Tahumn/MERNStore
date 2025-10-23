@@ -5,11 +5,17 @@ import io from 'socket.io-client';
 import SocketContext from './context';
 import { SOCKET_URL } from '../../constants';
 
+// FORCE REBUILD: 2025-10-22 15:30
 const SocketProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
 
   const connect = () => {
     const token = localStorage.getItem('token');
+    // Temporarily disable socket to fix infinite loop - UPDATED 2025-10-22
+    console.log('[Socket] Connection disabled temporarily for debugging');
+    console.log('[Socket] This message should appear if code is updated');
+    return;
+
     const sk = io(SOCKET_URL, {
       autoConnect: false
     });

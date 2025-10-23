@@ -7,7 +7,7 @@
 import React from 'react';
 
 import { connect } from 'react-redux';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import { Container } from 'reactstrap';
 
 import actions from '../../actions';
@@ -31,11 +31,12 @@ import Sell from '../Sell';
 import Contact from '../Contact';
 import OrderSuccess from '../OrderSuccess';
 import OrderPage from '../OrderPage';
+import Checkout from '../Checkout';
 import AuthSuccess from '../AuthSuccess';
 
 import Footer from '../../components/Common/Footer';
 import Page404 from '../../components/Common/Page404';
-import { CART_ITEMS } from '../../constants';
+import { CART_ITEMS, ROLES } from '../../constants';
 
 class Application extends React.PureComponent {
   constructor(props) {
@@ -73,15 +74,24 @@ class Application extends React.PureComponent {
   }
 
   render() {
+    const { authenticated, user } = this.props;
+    const isAdmin = authenticated && user?.role === ROLES.Admin;
+
     return (
       <div className='application'>
         <Notification />
         <Navigation />
         <main className='main'>
-          <Container>
+          <Container fluid={isAdmin}>
             <div className='wrapper'>
               <Switch>
-                <Route exact path='/' component={HomePage} />
+                <Route
+                  exact
+                  path='/'
+                  render={props =>
+                    isAdmin ? <Redirect to='/dashboard' /> : <HomePage {...props} />
+                  }
+                />
                 <Route path='/shop' component={Shop} />
                 <Route path='/sell' component={Sell} />
                 <Route path='/contact' component={Contact} />
@@ -89,6 +99,10 @@ class Application extends React.PureComponent {
                 <Route path='/product/:slug' component={ProductPage} />
                 <Route path='/order/success/:id' component={OrderSuccess} />
                 <Route path='/order/:id' component={OrderPage} />
+                <Route
+                  path='/checkout'
+                  component={Authentication(Checkout)}
+                />
                 <Route path='/login' component={Login} />
                 <Route path='/register' component={Signup} />
                 <Route
@@ -112,7 +126,7 @@ class Application extends React.PureComponent {
             </div>
           </Container>
         </main>
-        <Footer />
+        {!isAdmin && <Footer />}
       </div>
     );
   }
@@ -121,7 +135,8 @@ class Application extends React.PureComponent {
 const mapStateToProps = state => {
   return {
     authenticated: state.authentication.authenticated,
-    products: state.product.storeProducts
+    products: state.product.storeProducts,
+    user: state.account.user
   };
 };
 

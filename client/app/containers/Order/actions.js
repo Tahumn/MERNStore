@@ -19,9 +19,8 @@ import {
 } from './constants';
 
 import { clearCart, getCartId } from '../Cart/actions';
-import { toggleCart } from '../Navigation/actions';
 import handleError from '../../utils/error';
-import { API_URL } from '../../constants';
+import { API_URL, CART_ID } from '../../constants';
 
 export const updateOrderStatus = value => {
   return {
@@ -195,40 +194,63 @@ export const updateOrderItemStatus = (itemId, status) => {
   };
 };
 
-export const addOrder = () => {
+export const addOrder = orderPayload => {
   return async (dispatch, getState) => {
     try {
-      const cartId = localStorage.getItem('cart_id');
-      const total = getState().cart.cartTotal;
-
-      if (cartId) {
-        const response = await axios.post(`${API_URL}/order/add`, {
-          cartId,
-          total
-        });
-
-        dispatch(push(`/order/success/${response.data.order._id}`));
-        dispatch(clearCart());
+      if (!orderPayload?.cartId) {
+        throw new Error('Missing cart reference.');
       }
+
+      const response = await axios.post(`${API_URL}/order/add`, orderPayload);
+
+      dispatch(push(`/order/success/${response.data.order._id}`));
+      dispatch(clearCart());
+
+      return response;
     } catch (error) {
-      handleError(error, dispatch);
+      throw error;
     }
   };
 };
 
-export const placeOrder = () => {
-  return (dispatch, getState) => {
-    const token = localStorage.getItem('token');
+export const placeOrder = checkoutDetails => {
+  return async (dispatch, getState) => {
+    try {
+      const token = localStorage.getItem('token');
+      const cartItems = getState().cart.cartItems;
 
-    const cartItems = getState().cart.cartItems;
+      if (!token || cartItems.length < 1) {
+        return;
+      }
 
-    if (token && cartItems.length > 0) {
-      Promise.all([dispatch(getCartId())]).then(() => {
-        dispatch(addOrder());
-      });
+      await dispatch(getCartId());
+
+      const cartId = localStorage.getItem(CART_ID);
+      const total = getState().cart.cartTotal;
+
+      if (!cartId) {
+        throw new Error('Unable to prepare your cart for checkout.');
+      }
+
+      const paymentMethod =
+        checkoutDetails?.paymentMethod?.value ??
+        checkoutDetails?.paymentMethod ??
+        'COD';
+
+      const payload = {
+        cartId,
+        total,
+        paymentMethod,
+        shippingAddress: checkoutDetails?.shippingAddress,
+        selectedAddressId: checkoutDetails?.selectedAddressId,
+        useNewAddress: checkoutDetails?.useNewAddress,
+        note: checkoutDetails?.note
+      };
+
+      await dispatch(addOrder(payload));
+    } catch (error) {
+      handleError(error, dispatch);
     }
-
-    dispatch(toggleCart());
   };
 };
 
