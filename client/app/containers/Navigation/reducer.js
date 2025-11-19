@@ -6,7 +6,6 @@
 
 import {
   TOGGLE_MENU,
-  TOGGLE_CART,
   TOGGLE_BRAND,
   SEARCH_CHANGE,
   SUGGESTIONS_FETCH_REQUEST,
@@ -15,7 +14,6 @@ import {
 
 const initialState = {
   isMenuOpen: false,
-  isCartOpen: false,
   isBrandOpen: false,
   searchValue: '',
   searchSuggestions: []
@@ -26,14 +24,7 @@ const navigationReducer = (state = initialState, action) => {
     case TOGGLE_MENU:
       return {
         ...state,
-        isMenuOpen: !state.isMenuOpen,
-        isCartOpen: false
-      };
-    case TOGGLE_CART:
-      return {
-        ...state,
-        isCartOpen: !state.isCartOpen,
-        isMenuOpen: false
+        isMenuOpen: !state.isMenuOpen
       };
     case TOGGLE_BRAND:
       return {

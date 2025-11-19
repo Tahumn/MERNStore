@@ -26,7 +26,6 @@ import {
 import { API_URL, CART_ID, CART_ITEMS, CART_TOTAL } from '../../constants';
 import handleError from '../../utils/error';
 import { allFieldsValidation } from '../../utils/validation';
-import { toggleCart } from '../Navigation/actions';
 
 // Handle Add To Cart
 export const handleAddToCart = product => {
@@ -74,7 +73,6 @@ export const handleAddToCart = product => {
     localStorage.setItem(CART_ITEMS, JSON.stringify(newCartItems));
 
     dispatch(calculateCartTotal());
-    dispatch(toggleCart());
   };
 };
 
@@ -90,7 +88,6 @@ export const handleRemoveFromCart = product => {
       payload: product
     });
     dispatch(calculateCartTotal());
-    // dispatch(toggleCart());
   };
 };
 
@@ -139,7 +136,6 @@ export const startCheckout = () => {
     }
 
     localStorage.removeItem(CART_ID);
-    dispatch(toggleCart());
     dispatch(push('/checkout'));
   };
 };
@@ -217,11 +213,6 @@ export const quickAddToCart = product => {
     }
 
     dispatch(calculateCartTotal());
-
-    const isCartOpen = getState().navigation?.isCartOpen;
-    if (!isCartOpen) {
-      dispatch(toggleCart());
-    }
   };
 };
 
@@ -271,7 +262,6 @@ export const handleCheckout = () => {
       autoDismiss: 1
     };
 
-    dispatch(toggleCart());
     dispatch(push('/login'));
     dispatch(success(successfulOptions));
   };
@@ -281,7 +271,6 @@ export const handleCheckout = () => {
 export const handleShopping = () => {
   return (dispatch, getState) => {
     dispatch(push('/shop'));
-    dispatch(toggleCart());
   };
 };
 

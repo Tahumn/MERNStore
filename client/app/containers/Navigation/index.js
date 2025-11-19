@@ -34,9 +34,10 @@ import CartIcon from '../../components/Common/CartIcon';
 import { BarsIcon } from '../../components/Common/Icon';
 import MiniBrand from '../../components/Store//MiniBrand';
 import Menu from '../NavigationMenu';
-import Cart from '../Cart';
+import CartOverlayContext from '../../contexts/CartOverlay';
 
 class Navigation extends React.PureComponent {
+  static contextType = CartOverlayContext;
   componentDidMount() {
     this.props.fetchStoreBrands();
     this.props.fetchStoreCategories();
@@ -124,9 +125,7 @@ class Navigation extends React.PureComponent {
       categories,
       signOut,
       isMenuOpen,
-      isCartOpen,
       isBrandOpen,
-      toggleCart,
       toggleMenu,
       searchValue,
       suggestions,
@@ -135,6 +134,7 @@ class Navigation extends React.PureComponent {
       onSuggestionsClearRequested
     } = this.props;
     const isAdmin = authenticated && user?.role === ROLES.Admin;
+    const { openCart } = this.context || {};
 
     if (isAdmin) {
       const adminLinks = [
@@ -284,7 +284,7 @@ class Navigation extends React.PureComponent {
                   icon={<BarsIcon />}
                   onClick={() => this.toggleMenu()}
                 />
-                <CartIcon cartItems={cartItems} onClick={toggleCart} />
+                <CartIcon cartItems={cartItems} onClick={openCart} />
               </div>
             </Col>
             <Col
@@ -298,7 +298,7 @@ class Navigation extends React.PureComponent {
                 <CartIcon
                   className='d-none d-md-block'
                   cartItems={cartItems}
-                  onClick={toggleCart}
+                  onClick={openCart}
                 />
                 <Nav navbar>
                   {brands && brands.length > 0 && (
@@ -368,22 +368,6 @@ class Navigation extends React.PureComponent {
           </Row>
         </Container>
 
-        {/* hidden cart drawer */}
-        <div
-          className={isCartOpen ? 'mini-cart-open' : 'hidden-mini-cart'}
-          aria-hidden={`${isCartOpen ? false : true}`}
-        >
-          <div className='mini-cart'>
-            <Cart />
-          </div>
-          <div
-            className={
-              isCartOpen ? 'drawer-backdrop dark-overflow' : 'drawer-backdrop'
-            }
-            onClick={toggleCart}
-          />
-        </div>
-
         {/* hidden menu drawer */}
         <div
           className={isMenuOpen ? 'mini-menu-open' : 'hidden-mini-menu'}
@@ -407,7 +391,6 @@ class Navigation extends React.PureComponent {
 const mapStateToProps = state => {
   return {
     isMenuOpen: state.navigation.isMenuOpen,
-    isCartOpen: state.navigation.isCartOpen,
     isBrandOpen: state.navigation.isBrandOpen,
     cartItems: state.cart.cartItems,
     brands: state.brand.storeBrands,

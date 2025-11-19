@@ -4,11 +4,9 @@
     overflow: hidden;
     border-radius: 20px;
     padding: 36px 40px;
-    background: linear-gradient(
-      135deg,
-      rgba($primary, 0.12),
-      rgba($secondary, 0.08)
-    );
+    background: linear-gradient(135deg,
+        rgba($primary, 0.12),
+        rgba($secondary, 0.08));
 
     &:after {
       content: '';
@@ -169,29 +167,6 @@
           font-size: 1.05rem;
         }
       }
-    }
-  }
-
-  .homepage-cart {
-    background: $white;
-    border-radius: 20px;
-    box-shadow: $box-shadow-secondary;
-    padding: 28px 30px;
-
-    @include media-breakpoint-down(md) {
-      padding: 22px 20px;
-    }
-
-    .cart-list {
-      .item-box {
-        border-radius: 14px;
-        border: 1px solid rgba($gray-300, 0.5);
-      }
-    }
-
-    .homepage-cart-summary {
-      border-top: 1px dashed rgba($gray-300, 0.6);
-      padding-top: 20px;
     }
   }
 

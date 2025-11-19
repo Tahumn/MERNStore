@@ -13,7 +13,12 @@ import Button from '../../Common/Button';
 import Input from '../../Common/Input';
 
 const CartList = props => {
-  const { cartItems, handleRemoveFromCart, updateCartItemQuantity } = props;
+  const {
+    cartItems,
+    handleRemoveFromCart,
+    updateCartItemQuantity,
+    onCloseCart
+  } = props;
 
   const handleImageError = event => {
     if (!event?.target) return;
@@ -22,7 +27,9 @@ const CartList = props => {
   };
 
   const handleProductClick = () => {
-    props.toggleCart();
+    if (typeof onCloseCart === 'function') {
+      onCloseCart();
+    }
   };
 
   const handleQuantityChange = (item, value) => {

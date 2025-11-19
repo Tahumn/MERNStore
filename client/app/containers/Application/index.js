@@ -33,6 +33,7 @@ import OrderSuccess from '../OrderSuccess';
 import OrderPage from '../OrderPage';
 import Checkout from '../Checkout';
 import AuthSuccess from '../AuthSuccess';
+import Cart from '../Cart';
 
 import Footer from '../../components/Common/Footer';
 import Page404 from '../../components/Common/Page404';
@@ -81,6 +82,7 @@ class Application extends React.PureComponent {
       <div className='application'>
         <Notification />
         <Navigation />
+        <Cart />
         <main className='main'>
           <Container fluid={isAdmin}>
             <div className='wrapper'>

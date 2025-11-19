@@ -10,6 +10,7 @@ import { ConnectedRouter } from 'connected-react-router';
 
 import store, { history } from './store';
 import { SocketProvider } from './contexts/Socket';
+import { CartOverlayProvider } from './contexts/CartOverlay';
 import { SET_AUTH } from './containers/Authentication/constants';
 import Application from './containers/Application';
 import ScrollToTop from './scrollToTop';
@@ -46,7 +47,9 @@ const app = () => (
     <ConnectedRouter history={history}>
       <SocketProvider>
         <ScrollToTop>
-          <Application />
+          <CartOverlayProvider>
+            <Application />
+          </CartOverlayProvider>
         </ScrollToTop>
       </SocketProvider>
     </ConnectedRouter>

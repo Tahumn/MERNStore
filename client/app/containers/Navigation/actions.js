@@ -8,7 +8,6 @@ import axios from 'axios';
 import handleError from '../../utils/error';
 import {
   TOGGLE_MENU,
-  TOGGLE_CART,
   TOGGLE_BRAND,
   SEARCH_CHANGE,
   SUGGESTIONS_FETCH_REQUEST,
@@ -19,12 +18,6 @@ import { API_URL } from '../../constants';
 export const toggleMenu = () => {
   return {
     type: TOGGLE_MENU
-  };
-};
-
-export const toggleCart = () => {
-  return {
-    type: TOGGLE_CART
   };
 };
 

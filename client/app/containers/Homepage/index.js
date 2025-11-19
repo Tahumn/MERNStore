@@ -17,8 +17,6 @@ import { responsiveOneItemCarousel } from '../../components/Common/CarouselSlide
 import ProductList from '../../components/Store/ProductList';
 import LoadingIndicator from '../../components/Common/LoadingIndicator';
 import Button from '../../components/Common/Button';
-import CartList from '../../components/Store/CartList';
-import CartSummary from '../../components/Store/CartSummary';
 import { ROLES } from '../../constants';
 
 class Homepage extends React.PureComponent {
@@ -46,15 +44,9 @@ class Homepage extends React.PureComponent {
       authenticated,
       quickAddToCart,
       user,
-      cartItems,
-      cartTotal,
-      handleRemoveFromCart,
-      updateCartItemQuantity,
-      startCheckout,
     } = this.props;
     const { history } = this.props;
     const firstName = user?.firstName;
-    const hasCartItems = cartItems && cartItems.length > 0;
     const spotlightProducts = featuredProducts.slice(0, 3);
     const isAdmin = user?.role === ROLES.Admin;
 
@@ -215,35 +207,6 @@ class Homepage extends React.PureComponent {
             )}
           </div>
         )}
-
-        {hasCartItems && (
-          <div className='homepage-cart px-3 px-md-2 mt-5'>
-            <div className='d-flex align-items-center justify-content-between mb-3'>
-              <div>
-                <h2 className='section-title mb-1'>Giỏ hàng của bạn</h2>
-                <p className='section-subtitle mb-0 text-muted'>
-                  Cập nhật số lượng hoặc tiếp tục thanh toán.
-                </p>
-              </div>
-              <div className='d-flex align-items-center'>
-                <Button
-                  variant='link'
-                  text='Thanh toán'
-                  onClick={startCheckout}
-                />
-              </div>
-            </div>
-            <CartList
-              cartItems={cartItems}
-              handleRemoveFromCart={handleRemoveFromCart}
-              updateCartItemQuantity={updateCartItemQuantity}
-              toggleCart={() => {}}
-            />
-            <div className='homepage-cart-summary mt-3'>
-              <CartSummary cartTotal={cartTotal} />
-            </div>
-          </div>
-        )}
       </div>
     );
   }
@@ -257,8 +220,6 @@ const mapStateToProps = state => {
     isPopularLoading: state.homepage.isPopularLoading,
     authenticated: state.authentication.authenticated,
     user: state.account.user,
-    cartItems: state.cart.cartItems,
-    cartTotal: state.cart.cartTotal
   };
 };
 

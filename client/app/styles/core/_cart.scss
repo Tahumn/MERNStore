@@ -1,37 +1,40 @@
-// mini cart
-.mini-cart {
-  visibility: hidden;
+.cart-overlay {
   position: fixed;
-  top: 0;
-  right: -100%;
-  background-color: $white;
-  height: 100%;
-  width: 470px;
-  z-index: 1000;
-  // -webkit-box-shadow: $box-shadow;
-  // box-shadow: $box-shadow;
-  @include transition($layout-transition-higher-speed);
+  inset: 0;
+  z-index: 1100;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.cart-overlay__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.cart-sidebar {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  height: 100vh;
+  background: $white;
+  padding: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+  animation: cart-slide-in 0.3s ease-out forwards;
 
   @include media-breakpoint-down(xs) {
-    width: 88%;
-    top: 0;
+    max-width: 90%;
   }
 }
 
-// show hidden cart popup
-.mini-cart-open {
-  .mini-cart {
-    visibility: visible;
-    right: 0;
-    @include transition($layout-transition-higher-speed);
+@keyframes cart-slide-in {
+  from {
+    transform: translateX(100%);
   }
 
-  .dark-overflow {
-    @include dark-overflow();
-    @include media-breakpoint-down(xs) {
-      width: 100%;
-      top: 0;
-    }
+  to {
+    transform: translateX(0);
   }
 }
 

@@ -14,69 +14,86 @@ import CartSummary from '../../components/Store/CartSummary';
 import Checkout from '../../components/Store/Checkout';
 import { BagIcon, CloseIcon } from '../../components/Common/Icon';
 import Button from '../../components/Common/Button';
+import { useCartOverlay } from '../../contexts/CartOverlay';
 
-class Cart extends React.PureComponent {
-  render() {
-    const {
-      isCartOpen,
-      cartItems,
-      cartTotal,
-      toggleCart,
-      handleShopping,
-      handleCheckout,
-      handleRemoveFromCart,
-      startCheckout,
-      authenticated,
-      updateCartItemQuantity
-    } = this.props;
+const Cart = ({
+  cartItems,
+  cartTotal,
+  handleShopping,
+  handleCheckout,
+  handleRemoveFromCart,
+  startCheckout,
+  authenticated,
+  updateCartItemQuantity
+}) => {
+  const { showCart, closeCart } = useCartOverlay();
 
-    return (
-      <div className='cart'>
-        <div className='cart-header'>
-          {isCartOpen && (
+  if (!showCart) {
+    return null;
+  }
+
+  const handleCloseCart = () => closeCart();
+  const handleContinueShopping = () => {
+    closeCart();
+    handleShopping();
+  };
+  const handleCheckoutClick = () => {
+    closeCart();
+    handleCheckout();
+  };
+  const handleStartCheckout = () => {
+    closeCart();
+    startCheckout();
+  };
+
+  return (
+    <div className='cart-overlay' aria-hidden={`${!showCart}`}>
+      <div className='cart-overlay__backdrop' onClick={handleCloseCart} />
+      <div className='cart-sidebar' role='dialog' aria-label='Shopping cart'>
+        <div className='cart'>
+          <div className='cart-header'>
             <Button
               borderless
               variant='empty'
               ariaLabel='close the cart'
               icon={<CloseIcon />}
-              onClick={toggleCart}
+              onClick={handleCloseCart}
             />
+          </div>
+          {cartItems.length > 0 ? (
+            <div className='cart-body'>
+              <CartList
+                onCloseCart={handleCloseCart}
+                cartItems={cartItems}
+                handleRemoveFromCart={handleRemoveFromCart}
+                updateCartItemQuantity={updateCartItemQuantity}
+              />
+            </div>
+          ) : (
+            <div className='empty-cart'>
+              <BagIcon />
+              <p>Your shopping cart is empty</p>
+            </div>
+          )}
+          {cartItems.length > 0 && (
+            <div className='cart-checkout'>
+              <CartSummary cartTotal={cartTotal} />
+              <Checkout
+                handleShopping={handleContinueShopping}
+                handleCheckout={handleCheckoutClick}
+                startCheckout={handleStartCheckout}
+                authenticated={authenticated}
+              />
+            </div>
           )}
         </div>
-        {cartItems.length > 0 ? (
-          <div className='cart-body'>
-            <CartList
-              toggleCart={toggleCart}
-              cartItems={cartItems}
-              handleRemoveFromCart={handleRemoveFromCart}
-              updateCartItemQuantity={updateCartItemQuantity}
-            />
-          </div>
-        ) : (
-          <div className='empty-cart'>
-            <BagIcon />
-            <p>Your shopping cart is empty</p>
-          </div>
-        )}
-        {cartItems.length > 0 && (
-          <div className='cart-checkout'>
-            <CartSummary cartTotal={cartTotal} />
-            <Checkout
-              handleShopping={handleShopping}
-              handleCheckout={handleCheckout}
-              startCheckout={startCheckout}
-              authenticated={authenticated}
-            />
-          </div>
-        )}
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 const mapStateToProps = state => {
   return {
-    isCartOpen: state.navigation.isCartOpen,
     cartItems: state.cart.cartItems,
     cartTotal: state.cart.cartTotal,
     authenticated: state.authentication.authenticated
