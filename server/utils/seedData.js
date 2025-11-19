@@ -132,7 +132,7 @@ module.exports = {
       categoryName: 'Laptops & Tablets',
       brandName: 'TechWave',
       imageUrl:
-        'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&w=960&q=80'
+        'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=960&q=80'
     },
     {
       sku: 'TW-FLEX-12',
@@ -146,7 +146,7 @@ module.exports = {
       categoryName: 'Laptops & Tablets',
       brandName: 'TechWave',
       imageUrl:
-        'https://images.unsplash.com/photo-1517433456452-f9633a875f6f?auto=format&fit=crop&w=960&q=80'
+        'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&w=960&q=80'
     },
     {
       sku: 'TW-STRATA-15',
@@ -160,7 +160,7 @@ module.exports = {
       categoryName: 'Laptops & Tablets',
       brandName: 'TechWave',
       imageUrl:
-        'https://images.unsplash.com/photo-1516387938699-a93567ec168e?auto=format&fit=crop&w=960&q=80'
+        'https://images.unsplash.com/photo-1603302576837-37561b2e2302?auto=format&fit=crop&w=960&q=80'
     },
     {
       sku: 'TW-AIRNOTE-13',
@@ -174,7 +174,7 @@ module.exports = {
       categoryName: 'Laptops & Tablets',
       brandName: 'TechWave',
       imageUrl:
-        'https://images.unsplash.com/photo-1527443154391-507e9dc6c5cc?auto=format&fit=crop&w=960&q=80'
+        'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=960&q=80'
     },
     {
       sku: 'PP-X1-PRO',
@@ -188,7 +188,7 @@ module.exports = {
       categoryName: 'Smartphones & Wearables',
       brandName: 'PixelPro',
       imageUrl:
-        'https://images.unsplash.com/photo-1510552776732-01acc9a4c436?auto=format&fit=crop&w=960&q=80'
+        'https://cdn2.cellphones.com.vn/x/media/catalog/product/_/v/_vc_1.jpg'
     },
     {
       sku: 'PP-ACTIVE-2',
@@ -202,7 +202,7 @@ module.exports = {
       categoryName: 'Smartphones & Wearables',
       brandName: 'PixelPro',
       imageUrl:
-        'https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&w=960&q=80'
+        'https://images.unsplash.com/photo-1579586337278-3befd40fd17a?auto=format&fit=crop&w=960&q=80'
     },
     {
       sku: 'PP-LITE-5G',
@@ -216,7 +216,7 @@ module.exports = {
       categoryName: 'Smartphones & Wearables',
       brandName: 'PixelPro',
       imageUrl:
-        'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=960&q=80'
+        'https://images.unsplash.com/photo-1598327105666-5b89351aff97?auto=format&fit=crop&w=960&q=80'
     },
     {
       sku: 'PP-BUDS-PRO',
@@ -230,7 +230,7 @@ module.exports = {
       categoryName: 'Smartphones & Wearables',
       brandName: 'PixelPro',
       imageUrl:
-        'https://images.unsplash.com/photo-1511224995056-12f66d0e1e0a?auto=format&fit=crop&w=960&q=80'
+        'https://images.unsplash.com/photo-1606841837239-c5a1a4a07af7?auto=format&fit=crop&w=960&q=80'
     },
     {
       sku: 'SS-AURA-NC',
@@ -244,7 +244,7 @@ module.exports = {
       categoryName: 'Audio & Music',
       brandName: 'SoundSphere',
       imageUrl:
-        'https://images.unsplash.com/photo-1487215078519-e21cc028cb29?auto=format&fit=crop&w=960&q=80'
+        'https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=960&q=80'
     },
     {
       sku: 'SS-PULSE-SMART',
@@ -258,7 +258,7 @@ module.exports = {
       categoryName: 'Audio & Music',
       brandName: 'SoundSphere',
       imageUrl:
-        'https://images.unsplash.com/photo-1518444028788-8fbcd101ebb9?auto=format&fit=crop&w=960&q=80'
+        'https://images.unsplash.com/photo-1589492477829-5e65395b66cc?auto=format&fit=crop&w=960&q=80'
     },
     {
       sku: 'SS-STUDIO-MON',
@@ -272,7 +272,7 @@ module.exports = {
       categoryName: 'Audio & Music',
       brandName: 'SoundSphere',
       imageUrl:
-        'https://images.unsplash.com/photo-1504691342899-09fe62a9d1a4?auto=format&fit=crop&w=960&q=80'
+        'https://images.unsplash.com/photo-1545127398-14699f92334b?auto=format&fit=crop&w=960&q=80'
     },
     {
       sku: 'SS-MOTION-SBAR',
@@ -286,7 +286,7 @@ module.exports = {
       categoryName: 'Audio & Music',
       brandName: 'SoundSphere',
       imageUrl:
-        'https://images.unsplash.com/photo-1512427691650-1e0c2f9f7af0?auto=format&fit=crop&w=960&q=80'
+        'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?auto=format&fit=crop&w=960&q=80'
     },
     {
       sku: 'LO-VESTA-M',
@@ -300,7 +300,7 @@ module.exports = {
       categoryName: 'Cameras & Drones',
       brandName: 'Lumina Optics',
       imageUrl:
-        'https://images.unsplash.com/photo-1519183071298-a2962be90b8e?auto=format&fit=crop&w=960&q=80'
+        'https://fotocentreindia.com/wp-content/uploads/Sony-a7-III-Mirrorless-Camera-Body-Only-Online-Buy-India_1.jpg'
     },
     {
       sku: 'LO-AIRSCOUT',
@@ -314,7 +314,7 @@ module.exports = {
       categoryName: 'Cameras & Drones',
       brandName: 'Lumina Optics',
       imageUrl:
-        'https://images.unsplash.com/photo-1524646432686-1f1a3a37c1f6?auto=format&fit=crop&w=960&q=80'
+        'https://images.unsplash.com/photo-1507582020474-9a35b7d455d9?auto=format&fit=crop&w=960&q=80'
     },
     {
       sku: 'LO-PRIME-35',
@@ -328,7 +328,7 @@ module.exports = {
       categoryName: 'Cameras & Drones',
       brandName: 'Lumina Optics',
       imageUrl:
-        'https://images.unsplash.com/photo-1504215680853-026ed2a45def?auto=format&fit=crop&w=960&q=80'
+        'https://nisiopticsusa.com/wp-content/uploads/2025/03/Aureus-35PL.jpg'
     },
     {
       sku: 'LO-SCOUT-MINI',
@@ -342,7 +342,7 @@ module.exports = {
       categoryName: 'Cameras & Drones',
       brandName: 'Lumina Optics',
       imageUrl:
-        'https://images.unsplash.com/photo-1523978591478-c753949ff840?auto=format&fit=crop&w=960&q=80'
+        'https://images.unsplash.com/photo-1473968512647-3e447244af8f?auto=format&fit=crop&w=960&q=80'
     },
     {
       sku: 'HE-PUREFLOW',
@@ -356,7 +356,7 @@ module.exports = {
       categoryName: 'Home Essentials',
       brandName: 'HomeEase',
       imageUrl:
-        'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=960&q=80'
+        'https://images.unsplash.com/photo-1558317374-067fb5f30001?auto=format&fit=crop&w=960&q=80'
     },
     {
       sku: 'HE-BARISTA',
@@ -370,7 +370,7 @@ module.exports = {
       categoryName: 'Home Essentials',
       brandName: 'HomeEase',
       imageUrl:
-        'https://images.unsplash.com/photo-1498804103079-a6351b050096?auto=format&fit=crop&w=960&q=80'
+        'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=960&q=80'
     },
     {
       sku: 'HE-CLIMATE-SENSE',
@@ -384,7 +384,7 @@ module.exports = {
       categoryName: 'Home Essentials',
       brandName: 'HomeEase',
       imageUrl:
-        'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=960&q=80'
+        'https://images.unsplash.com/photo-1545259741-2ea3ebf61fa3?auto=format&fit=crop&w=960&q=80'
     },
     {
       sku: 'HE-PUREAIR',
@@ -398,7 +398,7 @@ module.exports = {
       categoryName: 'Home Essentials',
       brandName: 'HomeEase',
       imageUrl:
-        'https://images.unsplash.com/photo-1580894906472-1a5be4d9f41f?auto=format&fit=crop&w=960&q=80'
+        'https://images.unsplash.com/photo-1585771724684-38269d6639fd?auto=format&fit=crop&w=960&q=80'
     },
     {
       sku: 'GF-NEXUS',
@@ -412,7 +412,7 @@ module.exports = {
       categoryName: 'Gaming & Entertainment',
       brandName: 'GameForge',
       imageUrl:
-        'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=960&q=80'
+        'https://images.unsplash.com/photo-1486401899868-0e435ed85128?auto=format&fit=crop&w=960&q=80'
     },
     {
       sku: 'GF-APEX-VR',
@@ -426,7 +426,7 @@ module.exports = {
       categoryName: 'Gaming & Entertainment',
       brandName: 'GameForge',
       imageUrl:
-        'https://images.unsplash.com/photo-1516117172878-fd2c41f4a759?auto=format&fit=crop&w=960&q=80'
+        'https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?auto=format&fit=crop&w=960&q=80'
     },
     {
       sku: 'GF-RIFT-CONTROL',
@@ -440,7 +440,7 @@ module.exports = {
       categoryName: 'Gaming & Entertainment',
       brandName: 'GameForge',
       imageUrl:
-        'https://images.unsplash.com/photo-1526401485004-46910ecc8e51?auto=format&fit=crop&w=960&q=80'
+        'https://images.unsplash.com/photo-1605901309584-818e25960a8f?auto=format&fit=crop&w=960&q=80'
     },
     {
       sku: 'GF-STRIKE-CHAIR',
@@ -454,7 +454,7 @@ module.exports = {
       categoryName: 'Gaming & Entertainment',
       brandName: 'GameForge',
       imageUrl:
-        'https://images.unsplash.com/photo-1616628182501-3b3fcdeec95b?auto=format&fit=crop&w=960&q=80'
+        'https://images.unsplash.com/photo-1598550476439-6847785fcea6?auto=format&fit=crop&w=960&q=80'
     }
   ],
   productReviews: {
