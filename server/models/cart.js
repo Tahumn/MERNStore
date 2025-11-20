@@ -35,6 +35,7 @@ const CartItemSchema = new Schema({
       CART_ITEM_STATUS.Processing,
       CART_ITEM_STATUS.Shipped,
       CART_ITEM_STATUS.Delivered,
+      CART_ITEM_STATUS.Completed,
       CART_ITEM_STATUS.Cancelled
     ]
   }

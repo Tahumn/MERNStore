@@ -4,7 +4,7 @@
  *
  */
 
-import { push, goBack } from 'connected-react-router';
+import { goBack } from 'connected-react-router';
 import { success } from 'react-notification-system-redux';
 import axios from 'axios';
 
@@ -244,14 +244,13 @@ export const merchantSignUp = token => {
       await axios.post(`${API_URL}/merchant/signup/${token}`, merchant);
 
       const successfulOptions = {
-        title: `You have signed up successfully! Please sign in with the email and password. Thank you!`,
+        title: `You have signed up successfully! Please sign in on the Merchant Portal with your new password.`,
         position: 'tr',
         autoDismiss: 1
       };
 
-      dispatch(signOut());
+      dispatch(signOut('/merchant/login'));
       dispatch(success(successfulOptions));
-      dispatch(push('/login'));
       dispatch({ type: SIGNUP_RESET });
     } catch (error) {
       const title = `Please try to signup again!`;

@@ -45,7 +45,16 @@ module.exports = {
   mailgun: {
     key: getEnv('MAILGUN_KEY', null),
     domain: getEnv('MAILGUN_DOMAIN', null),
-    sender: getEnv('MAILGUN_EMAIL_SENDER', null)
+    sender: getEnv('MAILGUN_EMAIL_SENDER', null),
+    host: getEnv('MAILGUN_HOST', 'api.mailgun.net')
+  },
+  smtp: {
+    host: getEnv('SMTP_HOST', null),
+    port: toInt(getEnv('SMTP_PORT'), 587),
+    user: getEnv('SMTP_USER', null),
+    pass: getEnv('SMTP_PASS', null),
+    sender: getEnv('SMTP_EMAIL_SENDER', getEnv('SMTP_USER', null)),
+    secure: getEnv('SMTP_SECURE', 'false').toLowerCase() === 'true'
   },
   google: {
     clientID: getEnv('GOOGLE_CLIENT_ID', null),

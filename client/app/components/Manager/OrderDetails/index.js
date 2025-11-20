@@ -13,12 +13,25 @@ import OrderItems from '../OrderItems';
 import OrderSummary from '../OrderSummary';
 
 const OrderDetails = props => {
-  const { order, user, cancelOrder, updateOrderItemStatus, onBack } = props;
+  const {
+    order,
+    user,
+    cancelOrder,
+    updateOrderItemStatus,
+    onBack,
+    completeOrder
+  } = props;
   return (
     <div className='order-details'>
       <Row>
         <Col xs='12' md='12'>
-          <OrderMeta order={order} cancelOrder={cancelOrder} onBack={onBack} />
+          <OrderMeta
+            order={order}
+            cancelOrder={cancelOrder}
+            onBack={onBack}
+            user={user}
+            onCompleteOrder={completeOrder}
+          />
         </Col>
       </Row>
       <Row className='mt-5'>

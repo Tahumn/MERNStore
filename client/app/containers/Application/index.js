@@ -7,7 +7,7 @@
 import React from 'react';
 
 import { connect } from 'react-redux';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { Container } from 'reactstrap';
 
 import actions from '../../actions';
@@ -16,6 +16,7 @@ import actions from '../../actions';
 import Login from '../Login';
 import Signup from '../Signup';
 import MerchantSignup from '../MerchantSignup';
+import MerchantLogin from '../MerchantLogin';
 import HomePage from '../Homepage';
 import Dashboard from '../Dashboard';
 import Support from '../Support';
@@ -76,16 +77,23 @@ class Application extends React.PureComponent {
   }
 
   render() {
-    const { authenticated, user } = this.props;
+    const { authenticated, user, location } = this.props;
     const isAdmin = authenticated && user?.role === ROLES.Admin;
+    const isMerchantStandalone = /^\/merchant\//.test(
+      location?.pathname ?? ''
+    );
 
     return (
-      <div className='application'>
+      <div
+        className={`application${
+          isMerchantStandalone ? ' application--merchant' : ''
+        }`}
+      >
         <Notification />
-        <Navigation />
-        <Cart />
+        {!isMerchantStandalone && <Navigation />}
+        {!isMerchantStandalone && <Cart />}
         <main className='main'>
-          <Container fluid={isAdmin}>
+          <Container fluid={isAdmin && !isMerchantStandalone}>
             <div className='wrapper'>
               <Switch>
                 <Route
@@ -107,9 +115,10 @@ class Application extends React.PureComponent {
                   component={Authentication(Checkout)}
                 />
                 <Route path='/login' component={Login} />
+                <Route path='/merchant/login' component={MerchantLogin} />
                 <Route path='/register' component={Signup} />
                 <Route
-                  path='/merchant-signup/:token'
+                  path='/merchant/signup/:token'
                   component={MerchantSignup}
                 />
                 <Route path='/forgot-password' component={ForgotPassword} />
@@ -129,7 +138,7 @@ class Application extends React.PureComponent {
             </div>
           </Container>
         </main>
-        {!isAdmin && <Footer />}
+        {!isAdmin && !isMerchantStandalone && <Footer />}
       </div>
     );
   }
@@ -143,4 +152,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, actions)(Application);
+export default withRouter(connect(mapStateToProps, actions)(Application));

@@ -86,7 +86,7 @@ export const login = () => {
   };
 };
 
-export const signOut = () => {
+export const signOut = (redirectPath = '/login') => {
   return (dispatch, getState) => {
     const successfulOptions = {
       title: `You have signed out!`,
@@ -96,7 +96,7 @@ export const signOut = () => {
 
     dispatch(clearAuth());
     dispatch(clearAccount());
-    dispatch(push('/login'));
+    dispatch(push(redirectPath));
 
     clearProfileToken();
     setToken(null);

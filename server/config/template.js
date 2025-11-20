@@ -25,13 +25,19 @@ exports.confirmResetPasswordEmail = () => {
 };
 
 exports.merchantSignup = (origin, { resetToken, email }) => {
+  const encodedEmail = encodeURIComponent(email);
+  const link = `${origin}/merchant/signup/${resetToken}?email=${encodedEmail}`;
+
+  const text = [
+    'Welcome to Become a Supplier',
+    'Click the link to create a password',
+    link
+  ].join('\n');
+
   const message = {
-    subject: 'Merchant Registration',
-    text: `${
-      'Congratulations! Your application has been accepted. Please complete your Merchant account signup by clicking on the link below. \n\n' +
-      'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-      ''
-    }${origin}/merchant-signup/${resetToken}?email=${email}\n\n`
+    subject: 'Merchant Signup',
+    text,
+    html: `<p>Welcome to Become a Supplier</p><p>Click the link to create a password</p><p><a href="${link}">${link}</a></p>`
   };
 
   return message;

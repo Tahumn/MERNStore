@@ -24,7 +24,7 @@ router.post('/add', auth, async (req, res) => {
     const deliveredCart = await Cart.findOne({
       user: user._id,
       'products.product': productId,
-      'products.status': CART_ITEM_STATUS.Delivered
+      'products.status': { $in: [CART_ITEM_STATUS.Delivered, CART_ITEM_STATUS.Completed] }
     }).select('_id');
 
     if (!deliveredCart) {

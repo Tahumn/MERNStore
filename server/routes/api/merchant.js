@@ -11,6 +11,7 @@ const Brand = require('../../models/brand');
 const auth = require('../../middleware/auth');
 const role = require('../../middleware/role');
 const mailgun = require('../../services/mailgun');
+const keys = require('../../config/keys');
 
 // add merchant api
 router.post('/add', async (req, res) => {
@@ -160,7 +161,10 @@ router.put('/approve/:id', auth, async (req, res) => {
       new: true
     });
 
-    const origin = req.get('origin') || `${req.protocol}://${req.get('host')}`;
+    const origin =
+      req.get('origin') ||
+      keys.app?.clientURL ||
+      `${req.protocol}://${req.get('host')}`;
 
     await createMerchantUser(
       merchantDoc.email,
@@ -226,6 +230,12 @@ router.post('/signup/:token', async (req, res) => {
       resetPasswordToken: req.params.token
     });
 
+    if (!userDoc) {
+      return res.status(400).json({
+        error: 'Your signup link is invalid or has already been used.'
+      });
+    }
+
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password, salt);
 
@@ -246,7 +256,9 @@ router.post('/signup/:token', async (req, res) => {
       email
     });
 
-    await createMerchantBrand(merchantDoc);
+    if (merchantDoc) {
+      await createMerchantBrand(merchantDoc);
+    }
 
     res.status(200).json({
       success: true
@@ -316,6 +328,8 @@ const createMerchantBrand = async ({ _id, brandName, business }) => {
 const createMerchantUser = async (email, name, merchant, origin) => {
   const firstName = name;
   const lastName = '';
+  const buffer = await crypto.randomBytes(48);
+  const resetToken = buffer.toString('hex');
 
   const existingUser = await User.findOne({ email });
 
@@ -323,37 +337,39 @@ const createMerchantUser = async (email, name, merchant, origin) => {
     const query = { _id: existingUser._id };
     const update = {
       merchant,
-      role: ROLES.Merchant
+      role: ROLES.Merchant,
+      resetPasswordToken: resetToken
     };
 
     const merchantDoc = await Merchant.findOne({
       email
     });
 
-    await createMerchantBrand(merchantDoc);
+    if (merchantDoc) {
+      await createMerchantBrand(merchantDoc);
+    }
 
-    await mailgun.sendEmail(email, 'merchant-welcome', null, name);
+    await mailgun.sendEmail(email, 'merchant-signup', origin, {
+      resetToken,
+      email
+    });
 
     return await User.findOneAndUpdate(query, update, {
       new: true
     });
   } else {
-    const buffer = await crypto.randomBytes(48);
-    const resetToken = buffer.toString('hex');
-    const resetPasswordToken = resetToken;
-
     const user = new User({
       email,
       firstName,
       lastName,
-      resetPasswordToken,
+      resetPasswordToken: resetToken,
       merchant,
       role: ROLES.Merchant
     });
 
     if (process.env.NODE_ENV !== 'production') {
       console.log(
-        `[dev] Merchant signup token for ${email}: ${resetToken}. Complete signup via /merchant-signup/${resetToken}?email=${encodeURIComponent(
+        `[dev] Merchant signup token for ${email}: ${resetToken}. Complete signup via /merchant/signup/${resetToken}?email=${encodeURIComponent(
           email
         )}`
       );

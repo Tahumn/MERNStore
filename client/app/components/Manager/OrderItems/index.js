@@ -37,7 +37,10 @@ const OrderItems = props => {
   const renderItemsAction = item => {
     const isAdmin = user.role === ROLES.Admin;
 
-    if (item.status === CART_ITEM_STATUS.Delivered) {
+    if (
+      item.status === CART_ITEM_STATUS.Delivered ||
+      item.status === CART_ITEM_STATUS.Completed
+    ) {
       return (
         <Link
           to={`/product/${item.product.slug}`}
@@ -47,7 +50,7 @@ const OrderItems = props => {
           Reivew Product
         </Link>
       );
-    } else if (item.status !== 'Cancelled') {
+    } else if (item.status !== CART_ITEM_STATUS.Cancelled) {
       if (!isAdmin) {
         return (
           <DropdownConfirm label='Cancel'>

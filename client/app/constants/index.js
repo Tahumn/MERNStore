@@ -19,6 +19,7 @@ export const CART_ITEM_STATUS = {
   Processing: 'Processing',
   Shipped: 'Shipped',
   Delivered: 'Delivered',
+  Completed: 'Completed',
   Cancelled: 'Cancelled',
   Not_processed: 'Not processed'
 };

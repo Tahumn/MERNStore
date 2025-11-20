@@ -389,6 +389,85 @@ router.delete('/cancel/:orderId', auth, async (req, res) => {
   }
 });
 
+// mark order as completed (customer confirmation)
+router.put('/complete/:orderId', auth, async (req, res) => {
+  try {
+    if (req.user.role === ROLES.Admin) {
+      return res.status(403).json({
+        error: 'Store management accounts cannot complete customer orders.'
+      });
+    }
+
+    const orderId = req.params.orderId;
+    const userId = req.user._id;
+
+    const orderDoc = await Order.findOne({ _id: orderId, user: userId });
+
+    if (!orderDoc) {
+      return res.status(404).json({
+        error: 'Order could not be found for this account.'
+      });
+    }
+
+    const cartId = orderDoc.cart?._id || orderDoc.cart;
+    const cartDoc = await Cart.findOne({ _id: cartId });
+
+    if (!cartDoc) {
+      return res.status(404).json({
+        error: 'Cart items for this order could not be found.'
+      });
+    }
+
+    const hasPendingItems = cartDoc.products.some(
+      item =>
+        ![
+          CART_ITEM_STATUS.Delivered,
+          CART_ITEM_STATUS.Completed,
+          CART_ITEM_STATUS.Cancelled
+        ].includes(item.status)
+    );
+
+    if (hasPendingItems) {
+      return res.status(400).json({
+        error:
+          'Order is not ready to complete. Please wait until all items are delivered.'
+      });
+    }
+
+    const allCompleted = cartDoc.products.every(item =>
+      [CART_ITEM_STATUS.Completed, CART_ITEM_STATUS.Cancelled].includes(
+        item.status
+      )
+    );
+
+    if (allCompleted) {
+      return res.status(200).json({
+        success: true,
+        message: 'Order is already marked as completed.'
+      });
+    }
+
+    cartDoc.products = cartDoc.products.map(item => {
+      if (item.status === CART_ITEM_STATUS.Delivered) {
+        item.status = CART_ITEM_STATUS.Completed;
+      }
+      return item;
+    });
+
+    cartDoc.markModified('products');
+    await cartDoc.save();
+
+    res.status(200).json({
+      success: true,
+      message: 'Order has been marked as completed.'
+    });
+  } catch (error) {
+    res.status(400).json({
+      error: 'Your request could not be processed. Please try again.'
+    });
+  }
+});
+
 router.put('/status/item/:itemId', auth, async (req, res) => {
   try {
     const itemId = req.params.itemId;

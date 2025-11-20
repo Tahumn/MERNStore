@@ -8,7 +8,7 @@ import React from 'react';
 
 import { Row, Col } from 'reactstrap';
 
-import { CART_ITEM_STATUS } from '../../../constants';
+import { CART_ITEM_STATUS, ROLES } from '../../../constants';
 import { formatDate } from '../../../utils/date';
 import Button from '../../Common/Button';
 import { ArrowBackIcon } from '../../Common/Icon';
@@ -29,14 +29,38 @@ const formatPaymentMethod = method => {
 };
 
 const OrderMeta = props => {
-  const { order, cancelOrder, onBack } = props;
+  const { order, cancelOrder, onBack, onCompleteOrder, user } = props;
 
   const renderMetaAction = () => {
-    const isNotDelivered =
-      order.products.filter(i => i.status === CART_ITEM_STATUS.Delivered)
-        .length < 1;
+    const isCustomer = user?.role !== ROLES.Admin;
+    if (!isCustomer) return null;
 
-    if (isNotDelivered) {
+    const products = order.products || [];
+    if (!products.length) return null;
+    const nonCancelled = products.filter(
+      i => i.status !== CART_ITEM_STATUS.Cancelled
+    );
+    const allDeliveredOrCompleted =
+      nonCancelled.length > 0 &&
+      nonCancelled.every(item =>
+        [CART_ITEM_STATUS.Delivered, CART_ITEM_STATUS.Completed].includes(
+          item.status
+        )
+      );
+    const allCompleted =
+      nonCancelled.length > 0 &&
+      nonCancelled.every(item => item.status === CART_ITEM_STATUS.Completed);
+    const hasDelivered = nonCancelled.some(
+      item => item.status === CART_ITEM_STATUS.Delivered
+    );
+
+    if (allDeliveredOrCompleted && !allCompleted) {
+      return (
+        <Button size='sm' variant='primary' text='Complete Order' onClick={onCompleteOrder} />
+      );
+    }
+
+    if (!hasDelivered && !allCompleted && nonCancelled.length > 0) {
       return <Button size='sm' text='Cancel Order' onClick={cancelOrder} />;
     }
   };

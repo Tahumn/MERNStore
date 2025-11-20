@@ -21,3 +21,21 @@
     box-shadow: $box-shadow-secondary;
   }
 }
+
+.merchant-auth-layout {
+  min-height: 100vh;
+  background-color: $body-bg;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 16px;
+
+  .merchant-auth-card {
+    width: 100%;
+    max-width: 480px;
+    background: $theme-white;
+    border-radius: $border-radius-primary;
+    box-shadow: $box-shadow-secondary;
+    padding: 32px;
+  }
+}

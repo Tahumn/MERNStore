@@ -214,6 +214,32 @@ export const addOrder = orderPayload => {
   };
 };
 
+export const completeOrder = orderId => {
+  return async (dispatch, getState) => {
+    try {
+      if (!orderId) {
+        throw new Error('Missing order reference.');
+      }
+
+      const response = await axios.put(
+        `${API_URL}/order/complete/${orderId}`
+      );
+
+      dispatch(fetchOrder(orderId, false));
+
+      const successfulOptions = {
+        title: response.data.message || 'Order has been completed.',
+        position: 'tr',
+        autoDismiss: 1
+      };
+
+      dispatch(success(successfulOptions));
+    } catch (error) {
+      handleError(error, dispatch);
+    }
+  };
+};
+
 export const placeOrder = checkoutDetails => {
   return async (dispatch, getState) => {
     try {

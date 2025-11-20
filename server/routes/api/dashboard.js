@@ -19,6 +19,16 @@ const getOrderStatus = products => {
   }
 
   const statuses = products.map(item => item.status);
+  const nonCancelled = products.filter(
+    item => item.status !== CART_ITEM_STATUS.Cancelled
+  );
+
+  if (
+    nonCancelled.length > 0 &&
+    nonCancelled.every(item => item.status === CART_ITEM_STATUS.Completed)
+  ) {
+    return CART_ITEM_STATUS.Completed;
+  }
 
   if (statuses.every(status => status === CART_ITEM_STATUS.Delivered)) {
     return CART_ITEM_STATUS.Delivered;
