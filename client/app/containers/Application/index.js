@@ -38,6 +38,7 @@ import Cart from '../Cart';
 import Footer from '../../components/Common/Footer';
 import Page404 from '../../components/Common/Page404';
 import { CART_ITEMS, ROLES } from '../../constants';
+import { getProfileToken } from '../../utils/profile';
 
 class Application extends React.PureComponent {
   constructor(props) {
@@ -45,7 +46,7 @@ class Application extends React.PureComponent {
     this.handleStorage = this.handleStorage.bind(this);
   }
   componentDidMount() {
-    const token = localStorage.getItem('token');
+    const token = getProfileToken();
 
     if (token) {
       this.props.fetchProfile();

@@ -15,6 +15,7 @@ import { SET_AUTH } from './containers/Authentication/constants';
 import Application from './containers/Application';
 import ScrollToTop from './scrollToTop';
 import setToken from './utils/token';
+import { getProfileToken } from './utils/profile';
 
 // Import application sass styles
 import './styles/style.scss';
@@ -32,7 +33,7 @@ import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import 'rc-slider/assets/index.css';
 
 // Authentication
-const token = localStorage.getItem('token');
+const token = getProfileToken();
 
 if (token) {
   // authenticate api authorization

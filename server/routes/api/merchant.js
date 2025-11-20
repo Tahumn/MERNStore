@@ -351,6 +351,14 @@ const createMerchantUser = async (email, name, merchant, origin) => {
       role: ROLES.Merchant
     });
 
+    if (process.env.NODE_ENV !== 'production') {
+      console.log(
+        `[dev] Merchant signup token for ${email}: ${resetToken}. Complete signup via /merchant-signup/${resetToken}?email=${encodeURIComponent(
+          email
+        )}`
+      );
+    }
+
     await mailgun.sendEmail(email, 'merchant-signup', origin, {
       resetToken,
       email

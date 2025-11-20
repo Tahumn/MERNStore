@@ -21,6 +21,7 @@ import {
 import { clearCart, getCartId } from '../Cart/actions';
 import handleError from '../../utils/error';
 import { API_URL, CART_ID } from '../../constants';
+import { getProfileToken } from '../../utils/profile';
 
 export const updateOrderStatus = value => {
   return {
@@ -216,7 +217,7 @@ export const addOrder = orderPayload => {
 export const placeOrder = checkoutDetails => {
   return async (dispatch, getState) => {
     try {
-      const token = localStorage.getItem('token');
+      const token = getProfileToken();
       const cartItems = getState().cart.cartItems;
 
       if (!token || cartItems.length < 1) {

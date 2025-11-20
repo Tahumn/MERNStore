@@ -22,6 +22,7 @@ import { clearCart } from '../Cart/actions';
 import { clearAccount } from '../Account/actions';
 import { allFieldsValidation } from '../../utils/validation';
 import { API_URL } from '../../constants';
+import { setProfileToken, clearProfileToken } from '../../utils/profile';
 
 export const loginChange = (name, value) => {
   let formData = {};
@@ -67,7 +68,7 @@ export const login = () => {
         autoDismiss: 1
       };
 
-      localStorage.setItem('token', response.data.token);
+      setProfileToken(response.data.token);
 
       setToken(response.data.token);
 
@@ -97,7 +98,8 @@ export const signOut = () => {
     dispatch(clearAccount());
     dispatch(push('/login'));
 
-    localStorage.removeItem('token');
+    clearProfileToken();
+    setToken(null);
 
     dispatch(success(successfulOptions));
     // dispatch(clearCart());
