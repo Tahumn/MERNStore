@@ -15,7 +15,7 @@
 #       - BASE_API_URL=api
 #       - CLIENT_URL=http://localhost:8080
 #       - JWT_SECRET=secret_key_123
-#       - MONGO_URI=mongodb://mongo:27017/mern_ecommerce
+#       - MONGO_URI=mongodb+srv://mernuser:ms123@cluster0.okuvv1t.mongodb.net/mernstore?retryWrites=true&w=majority&appName=Cluster0
 #     ports:
 #       - '3000:3000'
 #     depends_on:
@@ -54,7 +54,7 @@ services:
       - BASE_API_URL=api
       - CLIENT_URL=http://localhost:8081
       - JWT_SECRET=secret_key_123
-      - MONGO_URI=mongodb://mongo:27017/mern_ecommerce
+      - MONGO_URI=mongodb+srv://mernuser:ms123@cluster0.okuvv1t.mongodb.net/mernstore?retryWrites=true&w=majority&appName=Cluster0
     ports:
       - '3001:3000'
     depends_on:
@@ -83,7 +83,7 @@ services:
     depends_on:
       - mongo
     environment:
-      - MONGO_URI=mongodb://mongo:27017/mern_ecommerce
+      - MONGO_URI=mongodb+srv://mernuser:ms123@cluster0.okuvv1t.mongodb.net/mernstore?retryWrites=true&w=majority&appName=Cluster0
     networks:
       - app-network
     restart: "no" # chỉ chạy 1 lần rồi thoát
