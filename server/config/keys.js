@@ -28,7 +28,8 @@ const normaliseUrl = value => value.replace(/\/+$/, '');
 const appName = getEnv('APP_NAME', 'Mern Ecommerce');
 const apiPath = normalisePath(getEnv('BASE_API_URL', 'api'));
 const clientURL = normaliseUrl(getEnv('CLIENT_URL', 'http://localhost:8081'));
-const defaultDbUri = 'mongodb://127.0.0.1:27017/mern_ecommerce';
+const defaultDbUri =
+  'mongodb+srv://mernuser:ms123@cluster0.okuvv1t.mongodb.net/mernstore?retryWrites=true&w=majority&appName=Cluster0';
 
 const toInt = (value, fallback) => {
   const parsed = Number.parseInt(value, 10);
