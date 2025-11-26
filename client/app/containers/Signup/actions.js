@@ -21,7 +21,7 @@ import setToken from '../../utils/token';
 import handleError from '../../utils/error';
 import { allFieldsValidation } from '../../utils/validation';
 import { API_URL } from '../../constants';
-import { setProfileToken } from '../../utils/profile';
+import { setProfileToken, setActiveProfile, PROFILE_KEYS } from '../../utils/profile';
 
 export const signupChange = (name, value) => {
   let formData = {};
@@ -79,6 +79,7 @@ export const signUp = () => {
         autoDismiss: 1
       };
 
+      setActiveProfile(PROFILE_KEYS.Default);
       setProfileToken(response.data.token);
 
       setToken(response.data.token);

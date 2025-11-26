@@ -20,7 +20,7 @@ import {
 
 import { clearCart, getCartId } from '../Cart/actions';
 import handleError from '../../utils/error';
-import { API_URL, CART_ID } from '../../constants';
+import { API_URL, CART_ID, CART_ITEM_STATUS, ROLES } from '../../constants';
 import { getProfileToken } from '../../utils/profile';
 
 export const updateOrderStatus = value => {
@@ -165,6 +165,24 @@ export const updateOrderItemStatus = (itemId, status) => {
   return async (dispatch, getState) => {
     try {
       const order = getState().order.order;
+      const userRole = getState().account.user?.role;
+      const isAdmin = userRole === ROLES.Admin;
+      const orderProducts = Array.isArray(order?.products)
+        ? order.products
+        : [];
+      const isOrderLockedForAdmin =
+        isAdmin &&
+        orderProducts.length > 0 &&
+        orderProducts.every(item =>
+          [
+            CART_ITEM_STATUS.Completed,
+            CART_ITEM_STATUS.Cancelled
+          ].includes(item.status)
+        );
+
+      if (isOrderLockedForAdmin) {
+        return;
+      }
 
       const response = await axios.put(
         `${API_URL}/order/status/item/${itemId}`,

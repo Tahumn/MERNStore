@@ -13,8 +13,19 @@ import { ROLES, CART_ITEM_STATUS } from '../../../constants';
 import Button from '../../Common/Button';
 import DropdownConfirm from '../../Common/DropdownConfirm';
 
+const ORDER_FINAL_STATUSES = [
+  CART_ITEM_STATUS.Completed,
+  CART_ITEM_STATUS.Cancelled
+];
+
 const OrderItems = props => {
   const { order, user, updateOrderItemStatus } = props;
+  const orderItems = Array.isArray(order?.products) ? order.products : [];
+  const isAdmin = user?.role === ROLES.Admin;
+  const isOrderCompletedForAdmin =
+    isAdmin &&
+    orderItems.length > 0 &&
+    orderItems.every(item => ORDER_FINAL_STATUSES.includes(item.status));
 
   const renderPopoverContent = item => {
     const statuses = Object.values(CART_ITEM_STATUS);
@@ -35,20 +46,34 @@ const OrderItems = props => {
   };
 
   const renderItemsAction = item => {
-    const isAdmin = user.role === ROLES.Admin;
+    if (isAdmin && isOrderCompletedForAdmin) {
+      return (
+        <span className='text-muted d-inline-block py-2 fs-12'>
+          Order completed
+        </span>
+      );
+    }
 
     if (
       item.status === CART_ITEM_STATUS.Delivered ||
       item.status === CART_ITEM_STATUS.Completed
     ) {
+      if (!isAdmin) {
+        return (
+          <Link
+            to={`/product/${item.product.slug}`}
+            className='btn-link text-center py-2 fs-12'
+            style={{ minWidth: 120 }}
+          >
+            Review Product
+          </Link>
+        );
+      }
+
       return (
-        <Link
-          to={`/product/${item.product.slug}`}
-          className='btn-link text-center py-2 fs-12'
-          style={{ minWidth: 120 }}
-        >
-          Reivew Product
-        </Link>
+        <span className='text-muted d-inline-block py-2 fs-12'>
+          {item.status}
+        </span>
       );
     } else if (item.status !== CART_ITEM_STATUS.Cancelled) {
       if (!isAdmin) {

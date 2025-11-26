@@ -76,7 +76,7 @@ const AddMerchant = props => {
               label={'Brand'}
               name={'brandName'}
               placeholder={'Your Business Brand'}
-              value={merchantFormData.brand}
+              value={merchantFormData.brandName}
               onInputChange={(name, value) => {
                 merchantChange(name, value);
               }}

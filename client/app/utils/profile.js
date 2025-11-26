@@ -1,8 +1,16 @@
 const PROFILE_QUERY_KEY = 'profile';
 const PROFILE_SESSION_KEY = 'mern_profile_id';
 const DEFAULT_PROFILE = 'default';
+const ADMIN_PROFILE = 'admin';
+const MERCHANT_PROFILE = 'merchant';
 const TOKEN_PREFIX = 'token:';
 const LEGACY_TOKEN_KEY = 'token';
+
+export const PROFILE_KEYS = {
+  Default: DEFAULT_PROFILE,
+  Admin: ADMIN_PROFILE,
+  Merchant: MERCHANT_PROFILE
+};
 
 const sanitizeProfile = value => {
   if (!value) return '';
@@ -17,13 +25,18 @@ const resolveProfile = value => sanitizeProfile(value) || null;
 
 const getTokenKey = profile => `${TOKEN_PREFIX}${profile}`;
 
+export const setActiveProfile = profile => {
+  const resolvedProfile = resolveProfile(profile) || DEFAULT_PROFILE;
+  sessionStorage.setItem(PROFILE_SESSION_KEY, resolvedProfile);
+  return resolvedProfile;
+};
+
 export const getActiveProfile = () => {
   const params = new URLSearchParams(window.location.search);
   const queryProfile = resolveProfile(params.get(PROFILE_QUERY_KEY));
 
   if (queryProfile) {
-    sessionStorage.setItem(PROFILE_SESSION_KEY, queryProfile);
-    return queryProfile;
+    return setActiveProfile(queryProfile);
   }
 
   const cachedProfile = sessionStorage.getItem(PROFILE_SESSION_KEY);
@@ -31,8 +44,7 @@ export const getActiveProfile = () => {
     return cachedProfile;
   }
 
-  sessionStorage.setItem(PROFILE_SESSION_KEY, DEFAULT_PROFILE);
-  return DEFAULT_PROFILE;
+  return setActiveProfile(DEFAULT_PROFILE);
 };
 
 export const getProfileToken = () => {

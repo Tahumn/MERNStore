@@ -12,7 +12,7 @@ import { Redirect } from 'react-router-dom';
 import actions from '../../actions';
 import setToken from '../../utils/token';
 import LoadingIndicator from '../../components/Common/LoadingIndicator';
-import { setProfileToken } from '../../utils/profile';
+import { setProfileToken, setActiveProfile, PROFILE_KEYS } from '../../utils/profile';
 
 class AuthSuccess extends React.PureComponent {
   componentDidMount() {
@@ -22,6 +22,7 @@ class AuthSuccess extends React.PureComponent {
       .replace('%20', ' ');
     if (jwtCookie) {
       setToken(jwtCookie);
+      setActiveProfile(PROFILE_KEYS.Default);
       setProfileToken(jwtCookie);
       this.props.setAuth();
     }

@@ -1,4 +1,15 @@
-require('dotenv').config();
+const path = require('path');
+const dotenv = require('dotenv');
+
+// Load default .env (if process started in repo root)
+dotenv.config();
+
+const rootEnvPath = path.resolve(__dirname, '../../.env');
+const serverEnvPath = path.resolve(__dirname, '../.env');
+
+// Load repo-level env first, then override with server/.env when present
+dotenv.config({ path: rootEnvPath, override: false });
+dotenv.config({ path: serverEnvPath, override: true });
 
 const getEnv = (key, fallback = undefined) => {
   const value = process.env[key];

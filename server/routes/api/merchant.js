@@ -49,7 +49,9 @@ router.post('/add', async (req, res) => {
       email,
       business,
       phoneNumber,
-      brandName
+      brandName,
+      status: MERCHANT_STATUS.Waiting_Approval,
+      isActive: false
     });
     const merchantDoc = await merchant.save();
 
@@ -57,7 +59,8 @@ router.post('/add', async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: `We received your request! we will reach you on your phone number ${phoneNumber}!`,
+      message:
+        'Thanks for submitting your application! Our admin team will review it shortly and email you once it has been approved.',
       merchant: merchantDoc
     });
   } catch (error) {
@@ -122,7 +125,7 @@ router.get('/', auth, role.check(ROLES.Admin), async (req, res) => {
 });
 
 // disable merchant account
-router.put('/:id/active', auth, async (req, res) => {
+router.put('/:id/active', auth, role.check(ROLES.Admin), async (req, res) => {
   try {
     const merchantId = req.params.id;
     const update = req.body.merchant;
@@ -148,7 +151,7 @@ router.put('/:id/active', auth, async (req, res) => {
 });
 
 // approve merchant
-router.put('/approve/:id', auth, async (req, res) => {
+router.put('/approve/:id', auth, role.check(ROLES.Admin), async (req, res) => {
   try {
     const merchantId = req.params.id;
     const query = { _id: merchantId };
@@ -184,7 +187,7 @@ router.put('/approve/:id', auth, async (req, res) => {
 });
 
 // reject merchant
-router.put('/reject/:id', auth, async (req, res) => {
+router.put('/reject/:id', auth, role.check(ROLES.Admin), async (req, res) => {
   try {
     const merchantId = req.params.id;
 

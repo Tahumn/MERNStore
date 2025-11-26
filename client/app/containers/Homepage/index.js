@@ -62,7 +62,7 @@ class Homepage extends React.PureComponent {
               </h1>
               <p className='hero-text text-muted mb-4'>
                 {authenticated
-                  ? 'Jump right into today’s top-rated items and keep your store on track.'
+                  ? "Jump right into today's top-rated items and keep your store on track."
                   : 'Browse curated collections, compare prices, and find something you will love in seconds.'}
               </p>
             </div>
@@ -116,9 +116,9 @@ class Homepage extends React.PureComponent {
         {spotlightProducts.length > 0 && (
           <div className='homepage-spotlight px-3 px-md-2 mb-5'>
             <div className='d-flex align-items-center justify-content-between mb-3'>
-              <h2 className='section-title mb-0'>Sản phẩm nổi bật</h2>
+              <h2 className='section-title mb-0'>Spotlight Picks</h2>
               <Link className='section-link text-uppercase' to='/shop'>
-                Xem tất cả
+                View All
               </Link>
             </div>
             <Row>
@@ -142,7 +142,7 @@ class Homepage extends React.PureComponent {
                         <span className='spotlight-price'>${item.price}</span>
                         <Button
                           size='sm'
-                          text='Thêm vào giỏ'
+                          text='Add to Cart'
                           onClick={() => quickAddToCart(item)}
                         />
                       </div>

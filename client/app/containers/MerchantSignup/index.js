@@ -45,7 +45,8 @@ class MerchantSignup extends React.PureComponent {
               <Col xs='12'>
                 <h2 className='text-center'>Create Merchant Password</h2>
                 <p className='text-center text-muted mb-4'>
-                  Complete your supplier account by confirming your information.
+                  You received this link after your application was approved. Confirm
+                  your information to create the password for your merchant portal.
                 </p>
               </Col>
 

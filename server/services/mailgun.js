@@ -9,6 +9,39 @@ const smtpConfig = keys.smtp || {};
 const appName = keys.app?.name ?? 'MERN Store';
 const defaultClientUrl = keys.app?.clientURL ?? '';
 
+const smtpOptions = {
+  host: smtpConfig.host || process.env.SMTP_HOST,
+  port: smtpConfig.port,
+  user: smtpConfig.user || process.env.SMTP_USER,
+  pass: smtpConfig.pass || process.env.SMTP_PASS,
+  sender: smtpConfig.sender || smtpConfig.user || process.env.SMTP_EMAIL_SENDER,
+  secure: typeof smtpConfig.secure === 'boolean' ? smtpConfig.secure : false
+};
+
+let smtpTransport = null;
+const hasSmtpRequirements =
+  smtpOptions.host && smtpOptions.user && smtpOptions.pass && smtpOptions.sender;
+
+if (hasSmtpRequirements) {
+  try {
+    smtpTransport = nodemailer.createTransport({
+      host: smtpOptions.host,
+      port: smtpOptions.port || 587,
+      secure: smtpOptions.secure || (smtpOptions.port || 587) === 465,
+      auth: {
+        user: smtpOptions.user,
+        pass: smtpOptions.pass
+      }
+    });
+  } catch (error) {
+    console.error('Failed to configure SMTP transport:', error);
+  }
+} else {
+  console.warn(
+    'SMTP settings are missing. Set SMTP_HOST/SMTP_PORT/SMTP_USER/SMTP_PASS to enable email delivery without Mailgun.'
+  );
+}
+
 const hasMailgunConfig = Boolean(key && domain && sender);
 let mailgunClient = null;
 
@@ -25,46 +58,10 @@ if (hasMailgunConfig) {
 
     mailgunClient = new Mailgun(mailgunOptions);
   } catch (error) {
-    console.warn('Mailgun configuration is invalid. Falling back to SMTP.');
+    console.warn('Mailgun configuration is invalid. SMTP will be used instead.');
   }
 } else {
-  console.warn('Mailgun keys are missing. Falling back to SMTP transport.');
-}
-
-let smtpTransport = null;
-
-const smtpOptions = {
-  host: smtpConfig.host || process.env.SMTP_HOST,
-  port: smtpConfig.port,
-  user: smtpConfig.user || process.env.SMTP_USER,
-  pass: smtpConfig.pass || process.env.SMTP_PASS,
-  sender: smtpConfig.sender || smtpConfig.user || process.env.SMTP_EMAIL_SENDER,
-  secure: typeof smtpConfig.secure === 'boolean' ? smtpConfig.secure : false
-};
-
-if (!mailgunClient) {
-  const hasSmtpRequirements =
-    smtpOptions.host && smtpOptions.user && smtpOptions.pass && smtpOptions.sender;
-
-  if (hasSmtpRequirements) {
-    try {
-      smtpTransport = nodemailer.createTransport({
-        host: smtpOptions.host,
-        port: smtpOptions.port || 587,
-        secure: smtpOptions.secure || (smtpOptions.port || 587) === 465,
-        auth: {
-          user: smtpOptions.user,
-          pass: smtpOptions.pass
-        }
-      });
-    } catch (error) {
-      console.error('Failed to configure SMTP transport:', error);
-    }
-  } else {
-    console.warn(
-      'SMTP settings are missing. Set SMTP_HOST/SMTP_PORT/SMTP_USER/SMTP_PASS to enable email delivery without Mailgun.'
-    );
-  }
+  console.warn('Mailgun keys are missing. Using SMTP transport.');
 }
 
 const sendWithMailgun = async (email, message, type) => {
@@ -123,20 +120,20 @@ exports.sendEmail = async (email, type, host, data) => {
     return null;
   }
 
-  const mailgunResult = await sendWithMailgun(email, message, type);
-
-  if (mailgunResult) {
-    return mailgunResult;
-  }
-
   const smtpResult = await sendWithSmtp(email, message, type);
 
   if (smtpResult) {
     return smtpResult;
   }
 
+  const mailgunResult = await sendWithMailgun(email, message, type);
+
+  if (mailgunResult) {
+    return mailgunResult;
+  }
+
   console.warn(
-    `Unable to send "${type}" email to ${email}. Configure Mailgun or SMTP settings to enable email delivery.`
+    `Unable to send "${type}" email to ${email}. Configure SMTP or Mailgun settings to enable email delivery.`
   );
   return null;
 };

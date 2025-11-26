@@ -124,8 +124,8 @@ class ProductPage extends React.PureComponent {
                           </li>
                         )}
                         <li>
-                          <span className='label'>Tồn kho:</span>
-                          <span className='value'>{availableStock} sản phẩm</span>
+                          <span className='label'>Stock:</span>
+                          <span className='value'>{availableStock} items</span>
                         </li>
                       </ul>
                     </div>

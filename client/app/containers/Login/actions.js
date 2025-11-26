@@ -21,8 +21,24 @@ import handleError from '../../utils/error';
 import { clearCart } from '../Cart/actions';
 import { clearAccount } from '../Account/actions';
 import { allFieldsValidation } from '../../utils/validation';
-import { API_URL } from '../../constants';
-import { setProfileToken, clearProfileToken } from '../../utils/profile';
+import { API_URL, ROLES } from '../../constants';
+import {
+  setProfileToken,
+  clearProfileToken,
+  setActiveProfile,
+  PROFILE_KEYS
+} from '../../utils/profile';
+
+const resolveProfileKeyFromRole = role => {
+  switch (role) {
+    case ROLES.Admin:
+      return PROFILE_KEYS.Admin;
+    case ROLES.Merchant:
+      return PROFILE_KEYS.Merchant;
+    default:
+      return PROFILE_KEYS.Default;
+  }
+};
 
 export const loginChange = (name, value) => {
   let formData = {};
@@ -59,8 +75,9 @@ export const login = () => {
 
     try {
       const response = await axios.post(`${API_URL}/auth/login`, user);
+      const { token, user: loggedInUser } = response.data;
 
-      const firstName = response.data.user.firstName;
+      const firstName = loggedInUser.firstName;
 
       const successfulOptions = {
         title: `Hey${firstName ? ` ${firstName}` : ''}, Welcome Back!`,
@@ -68,9 +85,11 @@ export const login = () => {
         autoDismiss: 1
       };
 
-      setProfileToken(response.data.token);
+      const profileKey = resolveProfileKeyFromRole(loggedInUser.role);
+      setActiveProfile(profileKey);
+      setProfileToken(token);
 
-      setToken(response.data.token);
+      setToken(token);
 
       dispatch(setAuth());
       dispatch(success(successfulOptions));

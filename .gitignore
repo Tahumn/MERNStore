@@ -11,6 +11,7 @@ package.json.bak
 .vscode/
 # config file
 .env
+server/.env
 
 # debug
 npm-debug.log*

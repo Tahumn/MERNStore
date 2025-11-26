@@ -7,6 +7,7 @@
 import React from 'react';
 
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { Row, Col } from 'reactstrap';
 
 import actions from '../../actions';
@@ -40,6 +41,14 @@ class Sell extends React.PureComponent {
               merchantChange={merchantChange}
               addMerchant={addMerchant}
             />
+            <p className='mt-3 text-muted small'>
+              After you submit the form our admin team must approve your request.
+              Once approved, you will receive an email titled <b>Merchant Signup</b>{' '}
+              with a secure link to create your password before you can access the portal.
+            </p>
+            <p className='text-muted small'>
+              Already approved? <Link to='/merchant/login'>Log in to the Merchant Portal</Link>
+            </p>
           </Col>
           <Col xs='12' md='6' className='order-1 order-md-2'>
             <Row>
