@@ -21,28 +21,32 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18
-          cache: 'npm'
 
-      - name: Install dependencies
+      - name: Install root dependencies
+        run: npm install
+
+      - name: Install server dependencies
+        working-directory: server
+        run: npm install
+
+      - name: Install client dependencies
+        working-directory: client
         run: npm install
 
       - name: Prepare report directory
         run: mkdir -p reports
 
       - name: Server regression suite (17 tests)
-        run: |
-          cd server
-          npm test -- --json --outputFile=../reports/server-regression.json
+        working-directory: server
+        run: npm test -- --json --outputFile=../reports/server-regression.json
 
       - name: Server full suite with coverage
-        run: |
-          cd server
-          npm run test:full -- --coverage --json --outputFile=../reports/server-full.json
+        working-directory: server
+        run: npm run test:full -- --coverage --json --outputFile=../reports/server-full.json
 
       - name: Client suite with coverage
-        run: |
-          cd client
-          npm test -- --coverage --json --outputFile=../reports/client.json
+        working-directory: client
+        run: npm test -- --coverage --json --outputFile=../reports/client.json
 
       - name: Build trend summary
         run: node scripts/ci/aggregate-tests.js
