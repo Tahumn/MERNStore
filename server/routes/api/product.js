@@ -1,8 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-const Mongoose = require('mongoose');
-
 // Bring in Models & Utils
 const Product = require('../../models/product');
 const Brand = require('../../models/brand');

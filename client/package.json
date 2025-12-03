@@ -5,7 +5,9 @@
   "scripts": {
     "clean": "rimraf dist",
     "build": "npm run clean && cross-env NODE_ENV=production webpack --mode production --config webpack/webpack.prod.js",
-    "dev": "cross-env NODE_ENV=development webpack-dev-server --config webpack/webpack.dev.js"
+    "dev": "cross-env NODE_ENV=development webpack-dev-server --config webpack/webpack.dev.js",
+    "test": "cross-env NODE_ENV=test node ../server/node_modules/jest/bin/jest.js --config ./jest.config.js --runInBand",
+    "test:coverage": "npm test -- --coverage"
   },
   "dependencies": {
     "@fontsource/poppins": "^4.5.9",

@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - develop
+  pull_request:
+
+jobs:
+  test:
+    name: CI Tests & Trend
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Prepare report directory
+        run: mkdir -p reports
+
+      - name: Server regression suite (17 tests)
+        run: |
+          cd server
+          npm test -- --json --outputFile=../reports/server-regression.json
+
+      - name: Server full suite with coverage
+        run: |
+          cd server
+          npm run test:full -- --coverage --json --outputFile=../reports/server-full.json
+
+      - name: Client suite with coverage
+        run: |
+          cd client
+          npm test -- --coverage --json --outputFile=../reports/client.json
+
+      - name: Build trend summary
+        run: node scripts/ci/aggregate-tests.js
+
+      - name: Publish run summary
+        run: cat reports/test-summary.md >> $GITHUB_STEP_SUMMARY
+
+      - name: Upload trend artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-trend
+          path: |
+            reports/*
+            server/coverage-full/coverage-summary.json
+            server/coverage-full/lcov.info
+            client/coverage/coverage-summary.json
+            client/coverage/lcov.info

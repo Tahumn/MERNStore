@@ -83,6 +83,25 @@ Both frontend and backend are deployed on Vercel from the same repository. When 
 npm run dev
 ```
 
+## QA & Testing
+
+- **Test plan & cases**: xem `docs/testing/TEST_PLAN.md` và `docs/testing/TEST_CASES.md`.
+- **Chạy automation**: 
+  - Cài deps: `npm install && npm run install:server`.
+  - Run nhanh 4 chức năng chính: `npm run test:server`.
+  - Run full suite (edge cases + integration search/cart/order/role, tổng 43 tests): `npm run test:server:full`.
+- **Báo cáo**: copy template từ `docs/testing/TEST_REPORT_TEMPLATE.md` vào thư mục `docs/testing/reports`.
+- **CI**: GitHub Actions workflow `ci.yml` tự động cài đặt & chạy test trên mọi push/PR.
+- **Monitoring & Agile note**: `docs/testing/CI_MONITORING.md`.
+
+## CI/CD & Monitoring
+
+- **CI pipeline**: `.github/workflows/ci.yml` chạy tự động khi push/PR. Local run tương đương: `npm install && npm run test:server`.
+- **Docker compose**: `docker-compose up -d` để chạy client (8081), server (3001) và Mongo. Seed dữ liệu (tùy chọn): `docker-compose --profile seed up mongo-seed`.
+- **Deploy thủ công**: build images `docker compose build`, push/redeploy trên server bằng `docker compose pull && docker compose up -d`.
+- **Health check**: `GET http://localhost:3001/health` trả JSON gồm trạng thái tổng thể + tình trạng Mongo (`connected`, `disconnected`, ...). Có thể dùng UptimeRobot/ELB giám sát endpoint này.
+- **Log & metrics**: theo gợi ý trong `docs/testing/CI_MONITORING.md` (Winston/Sentry/log shipping, Prometheus/Grafana). Tích hợp alert nếu `/health` trả mã 503 hoặc CI thất bại.
+
 ## Languages & tools
 
 - [Node](https://nodejs.org/en/)

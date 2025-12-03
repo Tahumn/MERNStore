@@ -6,33 +6,7 @@ const Cart = require('../../models/cart');
 const Product = require('../../models/product');
 const auth = require('../../middleware/auth');
 const store = require('../../utils/store');
-const { ROLES } = require('../../constants');
-
-const ensurePurchaser = user => {
-  if (!user) {
-    return {
-      allowed: false,
-      response: {
-        status: 401,
-        body: { error: 'Authentication required to manage the cart.' }
-      }
-    };
-  }
-
-  if (user.role === ROLES.Admin) {
-    return {
-      allowed: false,
-      response: {
-        status: 403,
-        body: {
-          error: 'Store management accounts cannot create or update carts.'
-        }
-      }
-    };
-  }
-
-  return { allowed: true };
-};
+const { ensurePurchaser } = require('../../utils/cartPermissions');
 
 router.post('/add', auth, async (req, res) => {
   try {

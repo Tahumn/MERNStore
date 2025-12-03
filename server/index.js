@@ -6,6 +6,7 @@ const helmet = require('helmet');
 
 const keys = require('./config/keys');
 const routes = require('./routes');
+const healthRouter = require('./routes/health');
 const socket = require('./socket');
 const setupDB = require('./utils/db');
 
@@ -24,6 +25,7 @@ app.use(cors());
 
 setupDB();
 require('./config/passport')(app);
+app.use(healthRouter);
 app.use(routes);
 
 const server = app.listen(port, () => {
