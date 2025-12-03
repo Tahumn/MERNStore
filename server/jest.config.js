@@ -9,5 +9,8 @@ module.exports = {
   ],
   coverageDirectory: '<rootDir>/coverage',
   moduleFileExtensions: ['js', 'json'],
+  moduleNameMapper: {
+    '^debug$': '<rootDir>/tests/mocks/debug.js'
+  },
   reporters: ['<rootDir>/tests/reporters/gtestReporter.js']
 };
