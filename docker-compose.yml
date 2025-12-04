@@ -78,7 +78,7 @@ services:
     container_name: mongo-seed
     profiles:
       - seed
-    # 🧠 chạy file seed.js với email & password admin
+    # chạy file seed.js với email & password admin
     command: ["node", "utils/seed.js", "admin@gmail.com", "admin123"]
     depends_on:
       - mongo
