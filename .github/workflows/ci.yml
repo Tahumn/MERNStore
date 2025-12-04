@@ -60,6 +60,8 @@ jobs:
           name: test-trend
           path: |
             reports/*
+            server/coverage/coverage-final.json
+            server/coverage/lcov.info
             server/coverage-full/coverage-final.json
             server/coverage-full/lcov.info
             client/coverage/coverage-final.json

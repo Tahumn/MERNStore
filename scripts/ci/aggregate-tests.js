@@ -8,7 +8,7 @@ const suites = [
     key: 'server-regression',
     name: 'Server Regression (17 tests)',
     resultPath: path.join(reportDir, 'server-regression.json'),
-    coveragePath: null
+    coveragePath: path.resolve('server/coverage/coverage-final.json')
   },
   {
     key: 'server-full',
