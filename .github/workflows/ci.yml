@@ -38,7 +38,7 @@ jobs:
 
       - name: Server regression suite (17 tests)
         working-directory: server
-        run: npm test -- --json --outputFile=../reports/server-regression.json
+        run: npm test -- --coverage --json --outputFile=../reports/server-regression.json
 
       - name: Server full suite with coverage
         working-directory: server
