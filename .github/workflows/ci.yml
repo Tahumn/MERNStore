@@ -9,10 +9,9 @@ on:
   pull_request:
 
 jobs:
-  test:
-    name: CI Tests & Trend
+  server-tests:
+    name: Server build & tests
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -29,10 +28,6 @@ jobs:
         working-directory: server
         run: npm ci
 
-      - name: Install client dependencies
-        working-directory: client
-        run: npm ci
-
       - name: Prepare report directory
         run: mkdir -p reports
 
@@ -44,9 +39,90 @@ jobs:
         working-directory: server
         run: npm run test:full -- --coverage --json --outputFile=../reports/server-full.json
 
+      - name: Upload server artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: server-test-artifacts
+          path: |
+            reports
+            server/coverage/coverage-final.json
+            server/coverage/lcov.info
+            server/coverage-full/coverage-final.json
+            server/coverage-full/lcov.info
+
+  client-tests:
+    name: Client build & tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install root dependencies
+        run: npm ci
+
+      - name: Install client dependencies
+        working-directory: client
+        run: npm ci
+
+      - name: Prepare report directory
+        run: mkdir -p reports
+
       - name: Client suite with coverage
         working-directory: client
         run: npm test -- --coverage --json --outputFile=../reports/client.json
+
+      - name: Upload client artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: client-test-artifacts
+          path: |
+            reports
+            client/coverage/coverage-final.json
+            client/coverage/lcov.info
+
+  aggregate-trend:
+    name: Aggregate CI trend
+    runs-on: ubuntu-latest
+    needs:
+      - server-tests
+      - client-tests
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Download server artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: server-test-artifacts
+          path: server-artifacts
+
+      - name: Download client artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: client-test-artifacts
+          path: client-artifacts
+
+      - name: Merge artifacts
+        run: |
+          mkdir -p reports server/coverage server/coverage-full client/coverage
+          cp -R server-artifacts/reports/. reports/
+          cp -R client-artifacts/reports/. reports/
+          cp server-artifacts/server/coverage/coverage-final.json server/coverage/coverage-final.json
+          cp server-artifacts/server/coverage/lcov.info server/coverage/lcov.info
+          cp server-artifacts/server/coverage-full/coverage-final.json server/coverage-full/coverage-final.json
+          cp server-artifacts/server/coverage-full/lcov.info server/coverage-full/lcov.info
+          cp client-artifacts/client/coverage/coverage-final.json client/coverage/coverage-final.json
+          cp client-artifacts/client/coverage/lcov.info client/coverage/lcov.info
 
       - name: Build trend summary
         run: node scripts/ci/aggregate-tests.js
@@ -69,7 +145,7 @@ jobs:
 
   deploy:
     name: CD Deploy (server image)
-    needs: test
+    needs: aggregate-trend
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:
