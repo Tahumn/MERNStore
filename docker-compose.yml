@@ -86,7 +86,7 @@ services:
       - MONGO_URI=mongodb+srv://mernuser:ms123@cluster0.okuvv1t.mongodb.net/mernstore?retryWrites=true&w=majority&appName=Cluster0
     networks:
       - app-network
-    restart: "no" # chỉ chạy 1 lần rồi thoát
+    restart: "no" 
 
 networks:
   app-network:
