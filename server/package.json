@@ -6,8 +6,8 @@
     "dev": "nodemon",
     "start": "cross-env NODE_ENV=production node index.js",
     "seed:db": "node utils/seed.js",
-    "test": "cross-env NODE_ENV=test jest --runInBand",
-    "test:full": "cross-env NODE_ENV=test jest --config jest.full.config.js --runInBand"
+    "test": "cross-env AWS_SDK_JS_SUPPRESS_MAINTENANCE_MODE_MESSAGE=1 NODE_OPTIONS=--no-warnings NODE_ENV=test jest --runInBand",
+    "test:full": "cross-env AWS_SDK_JS_SUPPRESS_MAINTENANCE_MODE_MESSAGE=1 NODE_OPTIONS=--no-warnings NODE_ENV=test jest --config jest.full.config.js --runInBand"
   },
   "dependencies": {
     "@faker-js/faker": "^8.4.1",
