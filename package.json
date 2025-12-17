@@ -13,7 +13,9 @@
     "test": "npm run test:server",
     "test:server": "cd server && npm test",
     "test:server:full": "cd server && npm run test:full",
-    "test:client": "cd client && npm test"
+    "test:server:e2e": "cd server && npm run test:e2e",
+    "test:client": "cd client && npm test",
+    "test:client:e2e": "cd client && npm run test:e2e"
   },
   "repository": {
     "type": "git",

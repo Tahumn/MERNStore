@@ -36,6 +36,7 @@ Out-of-scope: thanh toán thật, tối ưu hiệu năng, bảo mật chuyên s�
 - **Suite tách biệt**:
   - `npm run test:server`: 17 test case cho 4 chức năng chính.
   - `npm run test:server:full`: 43 test case (bao gồm edge case, snapshot pipeline, fuzz, integration search/cart/order/role, error handling).
+  - `npm run test:server:e2e`: 1–n test case E2E dùng MongoDB in-memory cho flow login → cart → checkout (kiểm tra lưu Order/Cart thực trong DB).
 
 Ưu điểm automation: chạy nhanh, tái lập, thích hợp regression. Ưu điểm manual: khám phá lỗi UX, case chưa rõ.
 
