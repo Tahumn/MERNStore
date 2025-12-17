@@ -1,0 +1,7 @@
+Topic,Details,Frequency,Audience,Format,Owner
+Daily Test Progress,"Tiến độ, Pass/Fail, Defects mới, Blockers",Daily,QA/Dev/PM,Email/Chat/Sheet,QA
+Defect Reporting,"Tạo/lưu lỗi theo mẫu (mô tả, steps, expected/actual, ảnh) và phân loại mức độ",Realtime,QA/Dev,Tracker/Sheet,QA
+Weekly Summary,"Phủ kiểm, xu hướng lỗi, rủi ro và hành động",Weekly,PM/Stakeholders,Slide/MD,QA
+Final Test Report,"Tỉ lệ pass, lỗi theo mức độ/trạng thái, quyết định release, bài học kinh nghiệm",At Exit,PM/Stakeholders,PDF/MD,QA
+Metrics,"Pass rate, Defect density, Coverage by module, Lead time fix",Daily/Final,QA/PM,Charts in report,QA
+Communication,"Kênh liên lạc & thời gian cập nhật (Email/Chat/Standup)",Daily,All,Schedule note,PM

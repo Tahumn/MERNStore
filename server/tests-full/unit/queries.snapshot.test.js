@@ -11,12 +11,12 @@ const {
 } = require('../../utils/queries');
 
 describe('query pipeline snapshots', () => {
-  test('matches snapshot for standard filters', () => {
+  test('UT-QUERY-004 matches snapshot for standard filters', () => {
     const pipeline = getStoreProductsQuery(50, 200, 4.5);
     expect(pipeline).toMatchSnapshot();
   });
 
-  test('rating 0 and min > max do not crash', () => {
+  test('UT-QUERY-005 rating 0 and min > max do not crash', () => {
     const pipeline = getStoreProductsQuery(200, 50, 0);
     const matchStage = pipeline.find(
       stage => stage.$match && stage.$match.isActive
@@ -26,12 +26,12 @@ describe('query pipeline snapshots', () => {
     expect(matchStage.$match.averageRating).toBeUndefined();
   });
 
-  test('wishlist pipeline snapshot', () => {
+  test('UT-QUERY-006 wishlist pipeline snapshot', () => {
     const pipeline = getStoreProductsWishListQuery('abc123');
     expect(pipeline).toMatchSnapshot();
   });
 
-  test('throws when ObjectId fails (invalid input)', () => {
+  test('UT-QUERY-007 throws when ObjectId fails (invalid input)', () => {
     const spy = jest
       .spyOn(mongoose.Types, 'ObjectId')
       .mockImplementation(() => {

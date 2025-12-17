@@ -1,0 +1,7 @@
+Milestone,Target Date,Owner,Notes
+Approve Test Plan,2025-12-16,PM/Approver,
+Complete Test Design,2025-12-18,QA,
+Start Test Execution,2025-12-18,QA,
+Cycle 1 Bug Fix/Retest,2025-12-19,Dev/QA,
+Regression Pass,2025-12-20,QA,
+Exit Review & Sign-off,2025-12-21,PM/QA/Dev,

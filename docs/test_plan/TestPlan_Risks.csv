@@ -1,0 +1,6 @@
+Risk,Impact,Likelihood,Mitigation
+Missing role checks (order status/review moderation),High,Medium,Add negative tests; raise bugs; quick patches before release
+Address endpoints missing auth on PUT/DELETE/GET,High,High,Restrict via middleware; add owner checks; test and track
+Email provider sandbox limits,Low,Medium,Stub or verify only 200 responses; avoid SLA assumptions
+Insufficient seed data for flows,Medium,Medium,Prepare deterministic seed; reset DB between runs
+Performance regressions on listing/search,Medium,Low,Smoke test with pagination and limits; profile queries

@@ -1,0 +1,9 @@
+Category,Criteria
+Entry,Code freeze for tested scope
+Entry,Environment up and reachable
+Entry,Seed data prepared and accounts created
+Entry,Test Plan approved; test design ≥95%
+Exit,All P0/P1 defects closed
+Exit,P2 defects have accepted workaround or fix plan
+Exit,Critical scenario pass rate ≥95%
+Exit,Reports and evidence published; stakeholders sign‑off

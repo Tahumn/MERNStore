@@ -1,0 +1,9 @@
+Category,Details
+Hardware,QA workstation (8GB+ RAM)
+OS,Windows/macOS/Linux supported by dev env
+Runtime,Node.js LTS (per server/package.json), npm
+Database,MongoDB (local or container)
+Browsers,Chrome/Firefox latest; Safari/Edge optional
+Network,Localhost/staging; stable internet for Mailchimp/Mailgun sandbox
+Data,Seed products/brands/categories/users; test emails
+Logging,Server console logs; access to error logs if available

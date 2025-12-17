@@ -1,0 +1,7 @@
+Deliverable,Owner,Format
+Approved Test Plan,QA/PM,MD + CSV (importable to Excel)
+Test Cases,QA,Markdown/CSV (linked to endpoints)
+Test Data,QA,CSV/JSON seed
+Execution Evidence,QA,Screenshots/Logs
+Daily/Final Test Report,QA,MD/PDF with metrics
+Defect Log,QA,Jira/Sheet with details

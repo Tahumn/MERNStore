@@ -35,7 +35,7 @@ const mockFindError = error => {
 };
 
 describe('GET /api/product/list/search/:name', () => {
-  test('returns products when matches are found', async () => {
+  test('IT-SRCH-001 returns products when matches are found', async () => {
     const app = createApp();
     mockFindResult([
       { name: 'Camera 01', slug: 'camera-01', imageUrl: '', price: 100 }
@@ -54,7 +54,7 @@ describe('GET /api/product/list/search/:name', () => {
     );
   });
 
-  test('returns 404 when nothing matches', async () => {
+  test('IT-SRCH-002 returns 404 when nothing matches', async () => {
     const app = createApp();
     mockFindResult([]);
 
@@ -64,7 +64,7 @@ describe('GET /api/product/list/search/:name', () => {
     expect(res.body.message).toMatch(/No product found/);
   });
 
-  test('returns 400 when find throws error', async () => {
+  test('IT-SRCH-003 returns 400 when find throws error', async () => {
     const app = createApp();
     const error = new Error('DB error');
     mockFindError(error);

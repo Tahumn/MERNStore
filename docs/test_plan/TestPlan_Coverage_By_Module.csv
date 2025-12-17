@@ -1,0 +1,15 @@
+Module,Key Scenarios,Priority
+Authentication,"Login valid/invalid; Register unique email; Forgot/Reset; Social callback success/failure",P0
+User Profile,"View/update own profile; non‑auth blocked",P1
+Address,"Add/list own; invalid phone/zipcode; (BUG) edit/delete/get by id without auth (negative)",P0
+Catalog,"List with sort/filter; category/brand active only; search name suggestions",P0
+Product Detail,"Slug not found/brand inactive → 404; correct fields and image substitute",P0
+Wishlist,"Add/remove; duplicate; non‑auth/admin blocked; invalid ObjectId",P1
+Cart,"Create cart; add/remove item; increase/decrease qty; qty bounds; admin blocked; stock adjust",P0
+Checkout/Order,"Submit with address+payment; history/detail; complete ready/not ready; cancel edge cases",P0
+Reviews,"Post allowed only after Delivered/Completed; moderation paths; duplicate; approve/reject/delete auth",P1
+Newsletter,"Subscribe valid/duplicate/invalid email",P2
+Contact,"Add request required fields; duplicate email",P2
+Brand/Category,"Active lists; select endpoints; disable brand cascades",P2
+Dashboard,"Admin summary with revenue/orders/pending/topProducts",P1
+Health,"/health returns 200",P2

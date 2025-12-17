@@ -1,0 +1,296 @@
+                                                                                           B
+ThisWorkbook
+"$"#,##0_);\("$"#,##0\)
+"$"#,##0_);[Red]\("$"#,##0\)
+"$"#,##0.00_);\("$"#,##0.00\)
+"$"#,##0.00_);[Red]\("$"#,##0.00\)
+_("$"* #,##0_);_("$"* \(#,##0\);_("$"* "-"_);_(@_)
+_(* #,##0_);_(* \(#,##0\);_(* "-"_);_(@_)
+_("$"* #,##0.00_);_("$"* \(#,##0.00\);_("$"* "-"??_);_(@_)
+_(* #,##0.00_);_(* \(#,##0.00\);_(* "-"??_);_(@_)
+"Yes";"Yes";"No"
+"True";"True";"False"
+"On";"On";"Off"
+mmm\-yyyy
+0.0%
+[$-409]dddd\,\ mmmm\ dd\,\ yyyy
+[$-409]dd\-mmm\-yy;@
+[$-409]d\-mmm\-yy;@
+mm/dd/yy;@
+m/d/yy;@
+0.0
+"$"#,##0;\-"$"#,##0
+"$"#,##0;[Red]\-"$"#,##0
+"$"#,##0.00;\-"$"#,##0.00
+"$"#,##0.00;[Red]\-"$"#,##0.00
+_-"$"* #,##0_-;\-"$"* #,##0_-;_-"$"* "-"_-;_-@_-
+_-* #,##0_-;\-* #,##0_-;_-* "-"_-;_-@_-
+_-"$"* #,##0.00_-;\-"$"* #,##0.00_-;_-"$"* "-"??_-;_-@_-
+_-* #,##0.00_-;\-* #,##0.00_-;_-* "-"??_-;_-@_-
+0;0;
+#,##0.0
+[$-409]h:mm:ss\ AM/PM
+[$-C09]dddd\,\ d\ mmmm\ yyyy
+[$-F800]dddd\,\ mmmm\ dd\,\ yyyy
+[$-C09]dd\-mmmm\-yyyy;@
+dd\-mmm\-yyyy
+d\-mmm\-yyyy
+dd/mmm/yyyy
+[$-409]dddd\,\ d\ mmmm\ yyyy
+[$-409]mmm\-yy;@
+@ @ 
+@ @ 
+@ @ 
+@ @ 
+@ @ 
+@ @ 
+@ @ 
+@ @ 
+@ @ 
+@ @ 
+@ @ 
+@ @ 
+@ @ 
+@ @ 
+@ @ 
+@ @ 
+@ @ 
+yyyyy* "}
+yyyyy* "}
+yyyyy* "}
+yyyyy* "}
+yyyyy* "
+?_-;_-@_}
+yyyyy* "
+ef	
+?_-;_-@_}
+yyyyy* "
+?_-;_-@_}
+yyyyy* "
+?_-;_-@_}
+yyyyy* "}
+yyyyy* "
+?_-;_-@_}
+yyyyy* "
+?_-;_-@_}
+yyyyy* "
+?_-;_-@_}
+yyyyy* "
+?_-;_-@_}
+yyyyy* "
+?_-;_-@_}
+yyyyy* "}
+yyyyy* "}
+yyyyy* "
+?_-;_-@_}
+yyyyy* "}
+yyyyy* "
+?_-;_-@_}
+yyyyy* "
+?_-;_-@_}
+yyyyy* "
+?_-;_-@_}
+yyyyy* "
+?_-;_-@_}
+yyyyy* "
+?_-;_-@_}
+yyyyy* "
+?_-;_-@_}
+yyyyy* "
+?_-;_-@_}
+yyyyy* "
+?_-;_-@_
+       	
+yyyyy* "
+?_-;_-@_
+???
+???
+       	
+???
+???
+yyyyy* "}
+yyyyy* "
+?_-;_-@_}
+yyyyy* "
+?_-;_-@_}
+yyyyy* "
+?_-;_-@_}
+yyyyy* "
+?_-;_-@_}
+yyyyy* "}
+??v
+yyyyy* "
+?_-;_-@_
+       	
+yyyyy* "
+?_-;_-@_}
+yyyyy* "
+?_-;_-@_}
+yyyyy* "
+?_-;_-@_
+       
+???
+yyyyy* "
+?_-;_-@_
+???
+???
+       	
+???
+???
+yyyyy* "}
+yyyyy* "
+?_-;_-@_
+yyyyy* "
+20% - Accent1
+20% - Accent2
+20% - Accent3
+20% - Accent4
+20% - Accent5
+20% - Accent6
+	ef
+40% - Accent1
+40% - Accent2
+40% - Accent3
+40% - Accent4
+40% - Accent5
+40% - Accent6
+60% - Accent1
+60% - Accent2
+60% - Accent3
+60% - Accent4
+60% - Accent5
+60% - Accent6
+Accent1
+Accent2
+Accent3
+Accent4
+Accent5
+Accent6
+Bad
+Calculation
+Check Cell
+???
+???
+???
+???
+Explanatory Text
+Good
+Heading 1
+Heading 2
+Heading 3
+Heading 4
+Input
+??v
+Linked Cell
+Neutral
+Nor}al
+Note
+Output
+???
+???
+???
+???
+???
+Title
+Total
+Warning Text
+	W/{
+2w;
+Nguyen Xuan Quoc Huong - Personal View`
+Checklist
+Doc Control
+UnitUnderTest;
+Usage notes: 
+Change Description
+Document Control Page
+Draft
+Revision Date
+Version No.
+Author's Name
+Approver's Name
+Approver's Title
+Use this template to develop the various kinds of documents. The content of the document are subjected to be filled and changed in the document, according to the following legends:u
+Blue comment: The brief guidance on how to fill the sections. These parts shall be removed from the actual documents.
+Example (Red text): The brief example to illustrate the sections. These parts shall be removed from the actual documents.
+[Text in brackets]: Shall be replaced with the actual contents.
+Template Used: 
+Template version:
+Template status:
+Template file name:!
+Revision history of this templatep
+This information is for template control purpose only. This page can be removed when an actual document is made.
+Duc, Chau Man
+Test Plan Review Checklist
+Test Plan Review Checklist.xls"
+Test Plan Review Checklist.xls 1.0
+Project:
+Release:	
+Document:
+Date:
+No.
+Criteria	
+Yes/No/NA
+Remarks
+CONTENT
+  Test Objectives
+  Test Scope
+  Test Strategy
+  Test Schedule
+  Test Environment
+  Test Deliverables
+  Test ReportingO
+Does the test plan identify the essential team member roles & responsibilities?d
+Does the plan include detailed specifications, descriptions, and procedures for testing all systems?	
+Reviewers
+0.9
+Reviewed, corrected
+Du Chu
+1.0
+Approved
+Hy Thai
+DE Manager
+Template document ID
+CK-PP-091002
+Document ID:J
+Does the test plan template conform to the specified standards/guidelines?A
+Does the document describe the type(s) of tests to be addressed? w
+For the test type, does the document list all relevant tests necessary to be applied to the chosen part of the system? 
+Are integration tests included?!
+Is the test coverage sufficient? (
+Is the test plan under version control? r
+Has a regression strategy been defined for regression testing when changes or enhancements in system design occur?
+1.02u
+Remove A1, B1, B2, B3, B4, B5, C12, C13, D1, D2, D3, D5, D6, D7, D8, D9, D12, D13, D14
+Add C15 -> 19 (before removal)	
+Tien Tran
+OVERVIEW?
+Can the boundaries or scope of the test be clearly identified? >
+Are all prerequisites and other related documents identified? *
+ Is the test traceable to requirement(s)? F
+Does the Test Plan address the following required information clearly?/
+  Resources (such as material, tools and human)6
+Is the schedule within a currently agreed time frame? 0
+Are the testing dependencies (if any) addressed?F
+Has the entrance criteria for the testing activities been identified? 
+Has the exit criteria, including thresholds for performance deviation, for the testing activities been identified? Example: All severity 1 and 2 defects must be closed and approved plans for severity 3 defects are defined in the Test Report. 
+1.05\
+Add 2 checkpoints about entrance criteria and exit criteria based on OPAL Detailed Test Plan
+1.1
+Tien DD	
+SEPG Head
+IBM Infoprint 1552
+IBM Infoprint 1552
+Lexmark T642
+IBM Infoprint 1552
+IBM Infoprint 1552
+Lexmark T642
+T@L
+Nguyen Xuan Quoc Huong
+Nguyen Xuan Quoc Huong
+Nhu-Tai Do
+Microsoft Excel
+420
+IBM
+Checklist
+Doc Control
+Worksheets

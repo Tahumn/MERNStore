@@ -1,0 +1,7 @@
+Type,Objective,Notes
+Functional,"Validate features behave as specified across key flows",UI + API checks
+API Integration,"Verify request/response codes, payloads and DB effects",Use Postman/REST client
+Security & Access,"Enforce authentication/authorization/ownership",Negative tests for missing role checks
+Regression,"Prevent re‑introduction of critical defects",Run smoke each release
+Compatibility,"Confirm basic operation on supported browsers",Chrome/Firefox latest
+Performance (smoke),"Ensure listing/search/featured/popular handle nominal volume",Check pagination/limits
