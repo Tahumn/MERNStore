@@ -49,6 +49,7 @@ jobs:
             server/coverage/lcov.info
             server/coverage-full/coverage-final.json
             server/coverage-full/lcov.info
+          if-no-files-found: ignore
 
   client-tests:
     name: Client build & tests
@@ -84,6 +85,7 @@ jobs:
             reports
             client/coverage/coverage-final.json
             client/coverage/lcov.info
+          if-no-files-found: ignore
 
   aggregate-trend:
     name: Aggregate CI trend
