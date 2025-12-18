@@ -1,140 +1,49 @@
-# MERN Ecommerce
+# MERNStore – MERN E-commerce Platform
 
-## Description
+## 1. Tổng quan dự án
+MERNStore là một hệ thống thương mại điện tử hoàn chỉnh, được phát triển nhằm mô phỏng một nền tảng mua bán trực tuyến thực tế, trong đó hỗ trợ đa vai trò người dùng, đa luồng nghiệp vụ, và quy trình kiểm thử – triển khai hiện đại theo hướng Agile/CI-CD.
+Hệ thống gồm 3 luồng nghiệp vụ chính tương ứng với 3 vai trò người dùn:
+- Client (Khách hàng)
+- Merchant (Nhà cung cấp)
+- Admin (Quản trị hệ thống) 
+Hệ thống được thiết kế theo mô hình Frontend – Backend – Database tách biệt, hỗ trợ CI/CD, Docker, Testing Automation và có thể deploy thực tế trên Vercel.
 
-An ecommerce store built with MERN stack, and utilizes third party API's. This ecommerce store enable three main different flows or implementations:
+## **2. Mục tiêu của dự án**
+### **2.1 Mục tiêu chức năng**
+- Xây dựng một website TMĐT với đầy đủ nghiệp vụ cốt lõi
+- Hỗ trợ nhiều vai trò người dùng với quyền hạn khác nhau
+- Đảm bảo dữ liệu nhất quán giữa Frontend – Backend – Database
 
-1. Buyers browse the store categories, products and brands
-2. Sellers or Merchants manage their own brand component
-3. Admins manage and control the entire store components 
+### **2.2 Mục tiêu kỹ thuật**
+- Áp dụng MERN stack theo best practices
+- Thiết kế RESTful API rõ ràng
+- Tích hợp Redux để quản lý state phức tạp
+- Áp dụng CI/CD và automation testing
+- Đóng gói & triển khai hệ thống bằng Docker
 
-### Features:
+## **3. Kiến trúc hệ thống**
+### **3.1 Kiến trúc tổng thể**
+Hệ thống được chia thành 3 tầng chính:
+   1. Frontend (Client)
+      - React.js
+      - Giao tiếp với Backend thông qua REST API
+      - Chạy độc lập trên port riêng 
 
-  * Node provides the backend environment for this application
-  * Express middleware is used to handle requests, routes
-  * Mongoose schemas to model the application data
-  * React for displaying UI components
-  * Redux to manage application's state
-  * Redux Thunk middleware to handle asynchronous redux actions
+   2. Backend (Server)
+      - Node.js + Express
+      - Xử lý logic nghiệp vụ, xác thực, phân quyền
+      - Kết nối MongoDB qua Atlas
+      - Cung cấp API cho client và admin
 
-## Demo
+   3. Database: Mongo Atlas
 
-This application is deployed on Vercel Please check it out :smile: [here](https://mern-store-gold.vercel.app).
+## **4. Kiểm thử & CI/CD**
+- Test Plan & Test Cases: docs/testing
+- Chạy test nhanh: npm run test:server
+- Chạy full suite: npm run test:server:full
+- CI tự động qua GitHub Actions
+- Báo cáo test theo template chuẩn
 
-See admin dashboard [demo](https://mernstore-bucket.s3.us-east-2.amazonaws.com/admin.mp4)
-
-## Docker Guide
-
-To run this project locally you can use docker compose provided in the repository. Here is a guide on how to run this project locally using docker compose.
-
-Clone the repository
-```
-git clone https://github.com/mohamedsamara/mern-ecommerce.git
-```
-
-Edit the dockercompose.yml file and update the the values for MONGO_URI and JWT_SECRET
-
-Then simply start the docker compose:
-
-```
-docker-compose build
-docker-compose up
-```
-
-## Database Seed
-
-* The seed command will create an admin user in the database
-* The email and password are passed with the command as arguments
-* Like below command, replace brackets with email and password. 
-* For more information, see code [here](server/utils/seed.js)
-
-```
-npm run seed:db [email-***@****.com] [password-******] // This is just an example.
-```
-
-## Install
-
-`npm install` in the project root will install dependencies in both `client` and `server`. [See package.json](package.json)
-
-Some basic Git commands are:
-
-```
-git clone https://github.com/mohamedsamara/mern-ecommerce.git
-cd project
-npm install
-```
-
-## ENV
-
-Create `.env` file for both client and server. See examples:
-
-[Frontend ENV](client/.env.example)
-
-[Backend ENV](server/.env.example)
-
-
-## Vercel Deployment
-
-Both frontend and backend are deployed on Vercel from the same repository. When deploying on Vercel, make sure to specifiy the root directory as `client` and `server` when importing the repository. See [client vercel.json](client/vercel.json) and [server vercel.json](server/vercel.json).
-
-## Start development
-
-```
-npm run dev
-```
-
-## QA & Testing
-
-- **Test plan & cases**: xem `docs/testing/TEST_PLAN.md` và `docs/testing/TEST_CASES.md`.
-- **Chạy automation**: 
-  - Cài deps: `npm install && npm run install:server`.
-  - Run nhanh 4 chức năng chính: `npm run test:server`.
-  - Run full suite (edge cases + integration search/cart/order/role, tổng 43 tests): `npm run test:server:full`.
-- **Báo cáo**: copy template từ `docs/testing/TEST_REPORT_TEMPLATE.md` vào thư mục `docs/testing/reports`.
-- **CI**: GitHub Actions workflow `ci.yml` tự động cài đặt & chạy test trên mọi push/PR.
-- **Monitoring & Agile note**: `docs/testing/CI_MONITORING.md`.
-
-## CI/CD & Monitoring
-
-- **CI pipeline**: `.github/workflows/ci.yml` chạy tự động khi push/PR. Local run tương đương: `npm install && npm run test:server`.
-- **Docker compose**: `docker-compose up -d` để chạy client (8081), server (3001) và Mongo. Seed dữ liệu (tùy chọn): `docker-compose --profile seed up mongo-seed`.
-- **Deploy thủ công**: build images `docker compose build`, push/redeploy trên server bằng `docker compose pull && docker compose up -d`.
-- **Health check**: `GET http://localhost:3001/health` trả JSON gồm trạng thái tổng thể + tình trạng Mongo (`connected`, `disconnected`, ...). Có thể dùng UptimeRobot/ELB giám sát endpoint này.
-- **Log & metrics**: theo gợi ý trong `docs/testing/CI_MONITORING.md` (Winston/Sentry/log shipping, Prometheus/Grafana). Tích hợp alert nếu `/health` trả mã 503 hoặc CI thất bại.
-
-## Languages & tools
-
-- [Node](https://nodejs.org/en/)
-
-- [Express](https://expressjs.com/)
-
-- [Mongoose](https://mongoosejs.com/)
-
-- [React](https://reactjs.org/)
-
-- [Webpack](https://webpack.js.org/)
-
-
-### Code Formatter
-
-- Add a `.vscode` directory
-- Create a file `settings.json` inside `.vscode`
-- Install Prettier - Code formatter in VSCode
-- Add the following snippet:  
-
-```json
-
-    {
-      "editor.formatOnSave": true,
-      "prettier.singleQuote": true,
-      "prettier.arrowParens": "avoid",
-      "prettier.jsxSingleQuote": true,
-      "prettier.trailingComma": "none",
-      "javascript.preferences.quoteStyle": "single",
-    }
-
-```
-
-
-
-
+## **5. Phạm vi ứng dụng**
+- Đồ án môn Kiểm thử phần mềm
+- Demo Agile + CI/CD
