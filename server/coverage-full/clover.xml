@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1764775718221" clover="3.2.0">
-  <project timestamp="1764775718222" name="All files">
+<coverage generated="1766025149375" clover="3.2.0">
+  <project timestamp="1766025149375" name="All files">
     <metrics statements="599" coveredstatements="410" conditionals="275" coveredconditionals="143" methods="72" coveredmethods="54" elements="946" coveredelements="607" complexity="0" loc="599" ncloc="599" packages="3" files="11" classes="11"/>
     <package name="middleware">
       <metrics statements="13" coveredstatements="13" conditionals="4" coveredconditionals="4" methods="3" coveredmethods="3"/>
@@ -631,9 +631,9 @@
         <line num="94" count="107" type="stmt"/>
         <line num="95" count="107" type="stmt"/>
         <line num="97" count="107" type="cond" truecount="2" falsecount="0"/>
-        <line num="98" count="45" type="stmt"/>
-        <line num="100" count="45" type="stmt"/>
-        <line num="101" count="45" type="stmt"/>
+        <line num="98" count="54" type="stmt"/>
+        <line num="100" count="54" type="stmt"/>
+        <line num="101" count="54" type="stmt"/>
         <line num="106" count="107" type="stmt"/>
         <line num="109" count="102" type="stmt"/>
         <line num="112" count="4" type="stmt"/>
